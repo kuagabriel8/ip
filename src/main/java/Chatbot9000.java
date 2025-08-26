@@ -19,7 +19,20 @@ public class Chatbot9000 {
         }
     }
 
-    public static void main(String[] args) {
+    public static void checkEmptyArguments(String arguments, String message) throws EmptyArgumentException{
+        if (arguments == null || arguments.isEmpty()) {
+            throw new EmptyArgumentException(message);
+        }
+    }
+
+    public static void checkInvalidCommand(String arguments, String message) throws InvalidCommandException {
+        if (!Arrays.asList(commands).contains(arguments)) {
+            throw new InvalidCommandException(message);
+        }
+
+    }
+
+    public static void main(String[] args) throws EmptyArgumentException{
         Scanner sc = new Scanner(System.in);
 
         System.out.println(LINE);
@@ -33,8 +46,10 @@ public class Chatbot9000 {
             String command = inputs[0];
             String arguments = (inputs.length > 1) ? inputs[1] : "";
 
-            if (Arrays.asList(commands).contains(command)) {
-
+            try {
+                checkInvalidCommand(command, "Idk what that means bro");
+            } catch (InvalidCommandException e) {
+                System.out.println(e.getMessage());
             }
             switch (command) {
                 case "list":
@@ -85,6 +100,12 @@ public class Chatbot9000 {
                     }
                     break;
                 case "todo":
+                    try {
+                        checkEmptyArguments(arguments, "Add a task after todo :(");
+                    } catch (EmptyArgumentException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
                     Todo t = new Todo(arguments);
                     tasks.add(t);
                     System.out.println(LINE);
@@ -95,6 +116,13 @@ public class Chatbot9000 {
 
                 case "deadline":
                     String[] deadlineParts = arguments.split(" /by ", 2);
+                    String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
+                    try {
+                        checkEmptyArguments(by, "Format: deadline [TASK] /by [DATE]");
+                    } catch (EmptyArgumentException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
                     Deadline deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
                     tasks.add(deadline);
                     System.out.println("Added: " + deadlineParts[0]);
@@ -104,16 +132,29 @@ public class Chatbot9000 {
 
                 case "event":
                     String[] fromSplit = arguments.split(" /from ", 2);
-                    String description = fromSplit[0];  // "project meeting"
+                    String description = fromSplit[0];
+
                     String from = "";
                     String to = "";
 
-                    if (fromSplit.length > 1) {
-                        String[] toSplit = fromSplit[1].split(" /to ", 2);
-                        from = toSplit[0];
-                        if (toSplit.length > 1) {
-                            to = toSplit[1];
+                    try {
+
+                        if (fromSplit.length > 1) {
+
+                            String[] toSplit = fromSplit[1].split(" /to ", 2);
+                            from = toSplit[0];
+                            if (toSplit.length > 1) {
+                                to = toSplit[1];
+                            } else {
+                                throw new EmptyArgumentException("Format: event [TASK] /from [DATE] /to [DATE]");
+
+                            }
+                        } else {
+                            throw new EmptyArgumentException("Format: event [TASK] /from [DATE] /to [DATE]");
                         }
+                    } catch (EmptyArgumentException e) {
+                        System.out.println(e.getMessage());
+                        break;
                     }
 
                     Event event = new Event(description, from, to);
@@ -123,13 +164,6 @@ public class Chatbot9000 {
                     System.out.println(tasks.size() + " tasks");
                     break;
 
-                default:
-                    Task task = new Task(command);
-                    tasks.add(task);
-                    System.out.println(LINE);
-                    System.out.println("added: " + input);
-                    System.out.println(tasks.size() + " tasks");
-                    break;
 
             }
             System.out.println(LINE);
