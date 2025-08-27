@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
     private static final ArrayList<Task> tasks = new ArrayList<>();
-    private static final String[] commands = {"list", "bye", "mark", "unmark", "todo", "deadline", "event"};
+    private static final String[] commands = {"list", "bye", "mark", "unmark", "todo", "deadline", "event", "delete"};
     private static final String[] taskCommands = {"todo", "deadline", "event"};
     public static boolean isInteger(String str) {
         if (str == null) {
@@ -94,6 +94,24 @@ public class Chatbot9000 {
                         System.out.println("OK, I've marked this task as not done yet:");
                         tasks.get(value).unmarkDone();
                         System.out.println(tasks.get(value).toString());
+
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
+                    }
+                    break;
+                case "delete":
+                    try {
+                        if (arguments.isEmpty()) {
+                            throw new IllegalArgumentException("You must enter a number after delete");
+                        } else if (!isInteger(arguments)) {
+                            throw new IllegalArgumentException("You must enter a number after delete");
+                        }
+
+                        int value = Integer.parseInt(arguments) - 1;
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println(tasks.get(value).toString());
+                        tasks.remove(value);
+
 
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
