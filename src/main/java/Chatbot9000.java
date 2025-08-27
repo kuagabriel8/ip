@@ -1,12 +1,34 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
     private static final ArrayList<Task> tasks = new ArrayList<>();
-    private static final String[] commands = {"list", "bye", "mark", "unmark", "todo", "deadline", "event", "delete"};
-    private static final String[] taskCommands = {"todo", "deadline", "event"};
+    public enum Command {
+        LIST,
+        BYE,
+        MARK,
+        UNMARK,
+        TODO,
+        DEADLINE,
+        EVENT,
+        DELETE;
+
+        public static Command fromString(String input) {
+            try {
+                for (Command c : Command.values()) {
+                    if (c.name().equalsIgnoreCase(input)) {
+                        return c;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            return null;
+
+
+        }
+    }
     public static boolean isInteger(String str) {
         if (str == null) {
             return false;
@@ -25,12 +47,12 @@ public class Chatbot9000 {
         }
     }
 
-    public static void checkInvalidCommand(String arguments, String message) throws InvalidCommandException {
+    /*public static void checkInvalidCommand(String arguments, String message) throws InvalidCommandException {
         if (!Arrays.asList(commands).contains(arguments)) {
             throw new InvalidCommandException(message);
         }
 
-    }
+    }*/
 
     public static void main(String[] args) throws EmptyArgumentException{
         Scanner sc = new Scanner(System.in);
@@ -43,28 +65,28 @@ public class Chatbot9000 {
         while (true) {
             String input = sc.nextLine().trim();
             String[] inputs = input.split(" ", 2);
-            String command = inputs[0];
+            Command command = Command.fromString(inputs[0]);
+            if (command == null) {
+                System.out.println("Idk what that means bro");
+                System.out.println(LINE);
+                continue;
+            }
             String arguments = (inputs.length > 1) ? inputs[1] : "";
 
-            try {
-                checkInvalidCommand(command, "Idk what that means bro");
-            } catch (InvalidCommandException e) {
-                System.out.println(e.getMessage());
-            }
             switch (command) {
-                case "list":
+                case LIST:
                     for (int i = 0; i < tasks.size(); i++) {
                         System.out.println((i + 1) + ". " + tasks.get(i));
                     }
                     break;
-                case "bye":
+                case BYE:
                     System.out.println(LINE);
                     System.out.println(" Bye. Hope to see you again soon!");
                     System.out.println(LINE);
                     sc.close();
 
                     return;
-                case "mark":
+                case MARK:
                     try {
                         if (arguments.isEmpty()) {
                             throw new IllegalArgumentException("You must enter a number after mark");
@@ -82,7 +104,7 @@ public class Chatbot9000 {
                     }
                     break;
 
-                case "unmark":
+                case UNMARK:
                     try {
                         if (arguments.isEmpty()) {
                             throw new IllegalArgumentException("You must enter a number after mark");
@@ -99,7 +121,7 @@ public class Chatbot9000 {
                         System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
                     }
                     break;
-                case "delete":
+                case DELETE:
                     try {
                         if (arguments.isEmpty()) {
                             throw new IllegalArgumentException("You must enter a number after delete");
@@ -117,7 +139,7 @@ public class Chatbot9000 {
                         System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
                     }
                     break;
-                case "todo":
+                case TODO:
                     try {
                         checkEmptyArguments(arguments, "Add a task after todo :(");
                     } catch (EmptyArgumentException e) {
@@ -132,7 +154,7 @@ public class Chatbot9000 {
                     System.out.println(tasks.size() + " tasks");
                     break;
 
-                case "deadline":
+                case DEADLINE:
                     String[] deadlineParts = arguments.split(" /by ", 2);
                     String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
                     try {
@@ -148,7 +170,7 @@ public class Chatbot9000 {
                     System.out.println(tasks.size() + " tasks");
                     break;
 
-                case "event":
+                case EVENT:
                     String[] fromSplit = arguments.split(" /from ", 2);
                     String description = fromSplit[0];
 
@@ -183,63 +205,9 @@ public class Chatbot9000 {
                     break;
 
 
+
             }
             System.out.println(LINE);
         }
-
-
     }
-
 }
-            /*
-            if (command.equalsIgnoreCase("bye")) {
-                System.out.println(LINE);
-                System.out.println(" Bye. Hope to see you again soon!");
-                System.out.println(LINE);
-                break;
-
-            } else if (inputs[0].equalsIgnoreCase("list")) {
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println((i + 1) + ". " + tasks.get(i));
-                }
-            } else if (inputs[0].equalsIgnoreCase("mark")) {
-                try {
-                    if (isInteger(inputs[1])) {
-                        int value = Integer.parseInt(inputs[1]) - 1;
-                        System.out.println("Nice! I've marked this task as done:");
-                        tasks.get(value).markDone();
-                        System.out.println(tasks.get(value).toString());
-                    }
-                } catch (Exception e){
-                    System.out.println("Error: " + e.getMessage());
-                }
-
-
-            } else if (inputs[0].equalsIgnoreCase("unmark")) {
-                try {
-                    if (isInteger(inputs[1])) {
-                        int value = Integer.parseInt(inputs[1]) - 1;
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        tasks.get(value).unmarkDone();
-                        System.out.println(tasks.get(value).toString());
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-            } else if (inputs[0].equalsIgnoreCase("todo")){
-
-                Task t = new Task(input);
-                tasks.add(t);
-                System.out.println(LINE);
-                System.out.println("added: " + input);
-            }
-
-             */
-/*
-            System.out.println(LINE);
-        }
-
-        sc.close();
-    }
-
-}*/
