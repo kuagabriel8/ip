@@ -1,9 +1,14 @@
+import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
     private static final ArrayList<Task> tasks = new ArrayList<>();
+    private static final String parentFolder = "data";
+    private static final String filepath = "data/Chatbot9000.txt";
     public enum Command {
         LIST,
         BYE,
@@ -12,7 +17,9 @@ public class Chatbot9000 {
         TODO,
         DEADLINE,
         EVENT,
-        DELETE;
+        DELETE,
+        SAVE;
+
 
         public static Command fromString(String input) {
             try {
@@ -56,6 +63,7 @@ public class Chatbot9000 {
 
     public static void main(String[] args) throws EmptyArgumentException{
         Scanner sc = new Scanner(System.in);
+
 
         System.out.println(LINE);
         System.out.println(" Hello! I'm Chatbot9000");
@@ -202,6 +210,35 @@ public class Chatbot9000 {
                     System.out.println("Added: " + fromSplit[0]);
                     System.out.println(event.toString());
                     System.out.println(tasks.size() + " tasks");
+                    break;
+
+                case SAVE:
+
+                    try {
+                        File folder = new File(parentFolder);
+                        if (!folder.exists()) {
+                            folder.mkdirs();
+                        }
+                        File file = new File(filepath);
+                        if (!file.exists()) {
+                            file.createNewFile();
+                        }
+                        FileWriter writer = new FileWriter(filepath);
+                        for (Task task : tasks) {
+                            int doneFlag = (task.isDone()) ? 1 : 0;
+                            writer.write(task + System.lineSeparator());
+                        }
+                        writer.close();
+
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+
+
+
+
+
                     break;
 
 
