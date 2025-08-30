@@ -3,6 +3,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
@@ -54,12 +57,6 @@ public class Chatbot9000 {
         }
     }
 
-    /*public static void checkInvalidCommand(String arguments, String message) throws InvalidCommandException {
-        if (!Arrays.asList(commands).contains(arguments)) {
-            throw new InvalidCommandException(message);
-        }
-
-    }*/
 
     public static void main(String[] args) throws EmptyArgumentException{
         Scanner sc = new Scanner(System.in);
