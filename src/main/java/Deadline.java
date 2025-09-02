@@ -1,11 +1,5 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.TemporalAccessor;
-import java.util.List;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.ResolverStyle;
-import java.time.LocalDate;
 
 public class Deadline extends Task{
     protected LocalDateTime by;
@@ -18,10 +12,16 @@ public class Deadline extends Task{
        // this.by = LocalDateTime.parse(by, inputFormat);
     }
 
+    public static Deadline parse(String arguments){
+        String[] deadlineParts = arguments.split(" /by ", 2);
+        String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
+        return new Deadline(deadlineParts[0], by);
+    }
+
     @Override
     public String toString(){
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM d yyyy, h:mma");
-        return "[D]" + super.toString() + " (by: " + by.toString() + ")";
+        return "[D]" + super.toString() + " by: " + by.toString() + "";
     }
 }
 
