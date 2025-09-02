@@ -1,3 +1,10 @@
+package chatbot.command;
+
+import chatbot.tasklist.TaskList;
+import chatbot.ui.Ui;
+import chatbot.storage.Storage;
+import chatbot.task.Task;
+
 public class AddCommand extends Command {
     private Task task;
 

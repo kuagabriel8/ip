@@ -1,9 +1,14 @@
+package chatbot.storage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import chatbot.tasklist.TaskList;
+import chatbot.task.*;
 
 public class Storage {
     private final String filepath;
@@ -52,7 +57,7 @@ public class Storage {
        //     System.out.println(line);
         }
 
-        // Identify task type (ToDo, Deadline, Event)
+        // Identify task type (ToDo, chatbot.task.Deadline, chatbot.task.Event)
         if (line.startsWith("[T]")) {
             String description = line.substring(3).trim();
             Task todo = new Todo(description);

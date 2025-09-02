@@ -1,3 +1,10 @@
+package chatbot.command;
+
+import chatbot.tasklist.TaskList;
+import chatbot.ui.Ui;
+import chatbot.storage.Storage;
+import chatbot.task.Task;
+
 public class DeleteCommand extends Command {
     private int taskIndex;  // The index of the task to delete
 
@@ -14,6 +21,6 @@ public class DeleteCommand extends Command {
 
     @Override
     public boolean isExit() {
-        return false;  // DeleteCommand doesn't exit the program
+        return false;  // chatbot.command.DeleteCommand doesn't exit the program
     }
 }
