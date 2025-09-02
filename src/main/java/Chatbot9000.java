@@ -1,18 +1,39 @@
-import java.io.File;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
-    private static final ArrayList<Task> tasks = new ArrayList<>();
     private static final String parentFolder = "data";
     private static final String filepath = "data/Chatbot9000.txt";
-    public enum Command {
+
+    private final Storage storage;
+    private TaskList taskList;
+    private final Ui ui;
+
+    public Chatbot9000() {
+        this.storage = new Storage(parentFolder, filepath);
+        this.ui = new Ui();
+        this.taskList = new TaskList(storage.loadTasks());
+    }
+
+    public void start() {
+        ui.greetUser();
+        boolean isExit = false;
+        while (!isExit) {
+            try {
+                String fullCommand = ui.readCommand();
+                ui.showLine();
+                Command c = Parser.parse(fullCommand);
+                c.execute(taskList, ui, storage);
+                isExit = c.isExit();
+            } catch (Exception e) {
+                ui.showMessage(e.getMessage());
+            } finally {
+                ui.showLine();
+            }
+        }
+    }
+
+    public enum Commands {
         LIST,
         BYE,
         MARK,
@@ -24,9 +45,9 @@ public class Chatbot9000 {
         SAVE;
 
 
-        public static Command fromString(String input) {
+        public static Commands fromString(String input) {
             try {
-                for (Command c : Command.values()) {
+                for (Commands c : Commands.values()) {
                     if (c.name().equalsIgnoreCase(input)) {
                         return c;
                     }
@@ -35,11 +56,14 @@ public class Chatbot9000 {
                 System.out.println(e);
             }
             return null;
-
-
         }
     }
-    public static boolean isInteger(String str) {
+
+    public static void main(String[] args) {
+        new Chatbot9000().start();
+    }
+
+    /*public static boolean isInteger(String str) {
         if (str == null) {
             return false;
         }
@@ -55,16 +79,17 @@ public class Chatbot9000 {
         if (arguments == null || arguments.isEmpty()) {
             throw new EmptyArgumentException(message);
         }
-    }
+    }*/
 
 
-    public static void main(String[] args) throws EmptyArgumentException{
+
+
+    /*public static void main(String[] args) throws EmptyArgumentException{
+        Chatbot9000 c = new Chatbot9000();
         Scanner sc = new Scanner(System.in);
 
-
         System.out.println(LINE);
-        System.out.println(" Hello! I'm Chatbot9000");
-        System.out.println(" What can I do for you?");
+        c.ui.greetUser();
         System.out.println(LINE);
 
         while (true) {
@@ -72,7 +97,7 @@ public class Chatbot9000 {
             String[] inputs = input.split(" ", 2);
             Command command = Command.fromString(inputs[0]);
             if (command == null) {
-                System.out.println("Idk what that means bro");
+                c.ui.invalidCommand();
                 System.out.println(LINE);
                 continue;
             }
@@ -80,16 +105,13 @@ public class Chatbot9000 {
 
             switch (command) {
                 case LIST:
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + ". " + tasks.get(i));
-                    }
+                    System.out.println(c.taskList.toString());
                     break;
                 case BYE:
                     System.out.println(LINE);
-                    System.out.println(" Bye. Hope to see you again soon!");
+                    c.ui.goodbyeUser();
                     System.out.println(LINE);
                     sc.close();
-
                     return;
                 case MARK:
                     try {
@@ -100,9 +122,9 @@ public class Chatbot9000 {
                         }
 
                         int value = Integer.parseInt(arguments) - 1;
-                        System.out.println("Nice! I've marked this task as done:");
-                        tasks.get(value).markDone();
-                        System.out.println(tasks.get(value).toString());
+                        c.ui.mark();
+                        c.taskList.getTask(value).markDone();
+                        System.out.println(c.taskList.getTask(value).toString());
 
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
@@ -118,9 +140,9 @@ public class Chatbot9000 {
                         }
 
                         int value = Integer.parseInt(arguments) - 1;
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        tasks.get(value).unmarkDone();
-                        System.out.println(tasks.get(value).toString());
+                        c.ui.unmark();
+                        c.taskList.getTask(value).unmarkDone();
+                        System.out.println(c.taskList.getTask(value).toString());
 
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
@@ -135,9 +157,9 @@ public class Chatbot9000 {
                         }
 
                         int value = Integer.parseInt(arguments) - 1;
-                        System.out.println("Noted. I've removed this task:");
-                        System.out.println(tasks.get(value).toString());
-                        tasks.remove(value);
+                        c.ui.delete();
+                        System.out.println(c.taskList.getTask(value).toString());
+                        c.taskList.deleteTask(value);
 
 
                     } catch (IndexOutOfBoundsException e) {
@@ -152,27 +174,27 @@ public class Chatbot9000 {
                         break;
                     }
                     Todo t = new Todo(arguments);
-                    tasks.add(t);
+                    c.taskList.addTask(t);
                     System.out.println(LINE);
                     System.out.println("Added: " + arguments);
                     System.out.println(t.toString());
-                    System.out.println(tasks.size() + " tasks");
+                    System.out.println(c.taskList.size() + " tasks");
                     break;
 
                 case DEADLINE:
                     String[] deadlineParts = arguments.split(" /by ", 2);
                     String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
                     try {
-                        checkEmptyArguments(by, "Format: deadline [TASK] /by [DATE]");
+                        checkEmptyArguments(by, "deadline /by task");
                     } catch (EmptyArgumentException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
                     Deadline deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
-                    tasks.add(deadline);
+                    c.taskList.addTask(deadline);
                     System.out.println("Added: " + deadlineParts[0]);
                     System.out.println(deadline.toString());
-                    System.out.println(tasks.size() + " tasks");
+                    System.out.println(c.taskList.size() + " tasks");
                     break;
 
                 case EVENT:
@@ -183,19 +205,16 @@ public class Chatbot9000 {
                     String to = "";
 
                     try {
-
                         if (fromSplit.length > 1) {
-
                             String[] toSplit = fromSplit[1].split(" /to ", 2);
                             from = toSplit[0];
                             if (toSplit.length > 1) {
                                 to = toSplit[1];
                             } else {
-                                throw new EmptyArgumentException("Format: event [TASK] /from [DATE] /to [DATE]");
-
+                                throw new EmptyArgumentException("event /from date to /date");
                             }
                         } else {
-                            throw new EmptyArgumentException("Format: event [TASK] /from [DATE] /to [DATE]");
+                            throw new EmptyArgumentException("event /from date to /date");
                         }
                     } catch (EmptyArgumentException e) {
                         System.out.println(e.getMessage());
@@ -203,45 +222,18 @@ public class Chatbot9000 {
                     }
 
                     Event event = new Event(description, from, to);
-                    tasks.add(event);
+                    c.taskList.addTask(event);
                     System.out.println("Added: " + fromSplit[0]);
                     System.out.println(event.toString());
-                    System.out.println(tasks.size() + " tasks");
+                    System.out.println(c.taskList.size() + " tasks");
                     break;
 
                 case SAVE:
-
-                    try {
-                        File folder = new File(parentFolder);
-                        if (!folder.exists()) {
-                            folder.mkdirs();
-                        }
-                        File file = new File(filepath);
-                        if (!file.exists()) {
-                            file.createNewFile();
-                        }
-                        FileWriter writer = new FileWriter(filepath);
-                        for (Task task : tasks) {
-                            int doneFlag = (task.isDone()) ? 1 : 0;
-                            writer.write(task + System.lineSeparator());
-                        }
-                        writer.close();
-
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
-
-
-
-
-
-
+                    c.storage.saveTasks(c.taskList);
                     break;
-
-
 
             }
             System.out.println(LINE);
         }
-    }
+    }*/
 }
