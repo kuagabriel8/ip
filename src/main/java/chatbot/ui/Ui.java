@@ -1,3 +1,5 @@
+package chatbot.ui;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -14,7 +16,7 @@ public class Ui {
     public void showLine(){ System.out.println("____________________________________________________________");}
     public void greetUser(){
         showLine();
-        System.out.println("Hello! I'm Chatbot9000 \n + What can I do for you");
+        System.out.println("Hello! I'm chatbot.Chatbot9000 \n + What can I do for you");
         showLine();}
     public void goodbyeUser(){ System.out.println("Bye. Hope to see you again soon"); }
     public void invalidCommand(){ System.out.println("Idk what that means bro");}

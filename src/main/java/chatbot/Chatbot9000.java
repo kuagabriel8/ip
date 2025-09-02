@@ -1,9 +1,16 @@
-import java.util.Scanner;
+package chatbot;
+
+import chatbot.tasklist.TaskList;
+import chatbot.ui.Ui;
+import chatbot.storage.Storage;
+import chatbot.command.Command;
+import chatbot.parser.Parser;
+
 
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
     private static final String parentFolder = "data";
-    private static final String filepath = "data/Chatbot9000.txt";
+    private static final String filepath = "data/chatbot.Chatbot9000.txt";
 
     private final Storage storage;
     private TaskList taskList;
@@ -75,17 +82,17 @@ public class Chatbot9000 {
         }
     }
 
-    public static void checkEmptyArguments(String arguments, String message) throws EmptyArgumentException{
+    public static void checkEmptyArguments(String arguments, String message) throws chatbot.exception.EmptyArgumentException{
         if (arguments == null || arguments.isEmpty()) {
-            throw new EmptyArgumentException(message);
+            throw new chatbot.exception.EmptyArgumentException(message);
         }
     }*/
 
 
 
 
-    /*public static void main(String[] args) throws EmptyArgumentException{
-        Chatbot9000 c = new Chatbot9000();
+    /*public static void main(String[] args) throws chatbot.exception.EmptyArgumentException{
+        chatbot.Chatbot9000 c = new chatbot.Chatbot9000();
         Scanner sc = new Scanner(System.in);
 
         System.out.println(LINE);
@@ -95,7 +102,7 @@ public class Chatbot9000 {
         while (true) {
             String input = sc.nextLine().trim();
             String[] inputs = input.split(" ", 2);
-            Command command = Command.fromString(inputs[0]);
+            chatbot.command.Command command = chatbot.command.Command.fromString(inputs[0]);
             if (command == null) {
                 c.ui.invalidCommand();
                 System.out.println(LINE);
@@ -127,7 +134,7 @@ public class Chatbot9000 {
                         System.out.println(c.taskList.getTask(value).toString());
 
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
+                        System.out.println("⚠️ Error: chatbot.task.Task number " + arguments + " does not exist.");
                     }
                     break;
 
@@ -145,7 +152,7 @@ public class Chatbot9000 {
                         System.out.println(c.taskList.getTask(value).toString());
 
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
+                        System.out.println("⚠️ Error: chatbot.task.Task number " + arguments + " does not exist.");
                     }
                     break;
                 case DELETE:
@@ -163,17 +170,17 @@ public class Chatbot9000 {
 
 
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("⚠️ Error: Task number " + arguments + " does not exist.");
+                        System.out.println("⚠️ Error: chatbot.task.Task number " + arguments + " does not exist.");
                     }
                     break;
                 case TODO:
                     try {
                         checkEmptyArguments(arguments, "Add a task after todo :(");
-                    } catch (EmptyArgumentException e) {
+                    } catch (chatbot.exception.EmptyArgumentException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
-                    Todo t = new Todo(arguments);
+                    chatbot.task.Todo t = new chatbot.task.Todo(arguments);
                     c.taskList.addTask(t);
                     System.out.println(LINE);
                     System.out.println("Added: " + arguments);
@@ -186,11 +193,11 @@ public class Chatbot9000 {
                     String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
                     try {
                         checkEmptyArguments(by, "deadline /by task");
-                    } catch (EmptyArgumentException e) {
+                    } catch (chatbot.exception.EmptyArgumentException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
-                    Deadline deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
+                    chatbot.task.Deadline deadline = new chatbot.task.Deadline(deadlineParts[0], deadlineParts[1]);
                     c.taskList.addTask(deadline);
                     System.out.println("Added: " + deadlineParts[0]);
                     System.out.println(deadline.toString());
@@ -211,17 +218,17 @@ public class Chatbot9000 {
                             if (toSplit.length > 1) {
                                 to = toSplit[1];
                             } else {
-                                throw new EmptyArgumentException("event /from date to /date");
+                                throw new chatbot.exception.EmptyArgumentException("event /from date to /date");
                             }
                         } else {
-                            throw new EmptyArgumentException("event /from date to /date");
+                            throw new chatbot.exception.EmptyArgumentException("event /from date to /date");
                         }
-                    } catch (EmptyArgumentException e) {
+                    } catch (chatbot.exception.EmptyArgumentException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
 
-                    Event event = new Event(description, from, to);
+                    chatbot.task.Event event = new chatbot.task.Event(description, from, to);
                     c.taskList.addTask(event);
                     System.out.println("Added: " + fromSplit[0]);
                     System.out.println(event.toString());
