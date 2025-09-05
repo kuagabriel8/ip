@@ -32,8 +32,9 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "chatbot9000"
     archiveClassifier = null
+    archiveFileName = 'chatbot9000.jar'
 }
 
 run{
