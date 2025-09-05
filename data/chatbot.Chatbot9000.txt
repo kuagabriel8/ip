@@ -1,0 +1,5 @@
+[T][ ] read
+[E][ ]  sleep  from:   now  to:  tmr to:   tmr
+[T][ ] read
+[E][ ]  /sleep  from:  /to forever to: to: 
+[T][ ] hi

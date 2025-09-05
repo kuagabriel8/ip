@@ -134,7 +134,7 @@ public class Chatbot9000 {
                         System.out.println(c.taskList.getTask(value).toString());
 
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("⚠️ Error: chatbot.task.Task number " + arguments + " does not exist.");
+                        System.out.println("Error: chatbot.task.Task number " + arguments + " does not exist.");
                     }
                     break;
 
@@ -152,8 +152,8 @@ public class Chatbot9000 {
                         System.out.println(c.taskList.getTask(value).toString());
 
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("⚠️ Error: chatbot.task.Task number " + arguments + " does not exist.");
-                    }
+                        System.out.println(" Error: chatbot.task.Task number " + arguments + " does not exist.");
+
                     break;
                 case DELETE:
                     try {
@@ -170,7 +170,7 @@ public class Chatbot9000 {
 
 
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("⚠️ Error: chatbot.task.Task number " + arguments + " does not exist.");
+                        System.out.println("Error: chatbot.task.Task number " + arguments + " does not exist.");
                     }
                     break;
                 case TODO:

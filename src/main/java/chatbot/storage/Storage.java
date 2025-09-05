@@ -43,47 +43,47 @@ public class Storage {
     }
 
     private Task parseTask(String line) {
-        // Remove extra spaces
         line = line.trim();
-      //  System.out.println(line);
 
-        // Check if the task is done (i.e., [X] instead of [ ])
         boolean isDone = line.startsWith("[X]", 3);
         if (isDone) {
             line = line.replace("[X]", "");
-      //      System.out.println(line);// Remove the [X] and extra spaces
+
         } else {
             line = line.replace("[ ]", "");
-       //     System.out.println(line);
+
         }
 
-        // Identify task type (ToDo, chatbot.task.Deadline, chatbot.task.Event)
         if (line.startsWith("[T]")) {
+            //line = line.replace("[T]", "");
             String description = line.substring(3).trim();
             Task todo = new Todo(description);
             if (isDone) todo.markDone();
-         //   System.out.println(todo.toString());
             return todo;
 
         } else if (line.startsWith("[D]")) {
-            String description = line.substring(3).split("by:")[0].trim();
-            String dateStr = line.split("by:")[1].trim();
+            line = line.replace("[D]", "");
+            String[] deadlineParts = line.split("by:");
+            String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
             //LocalDateTime by = parseDate(dateStr);
-            Deadline deadline = new Deadline(description, dateStr);
+            Deadline deadline = new Deadline(deadlineParts[0].trim(), by.trim());
             if (isDone) deadline.markDone();
             return deadline;
 
         } else if (line.startsWith("[E]")) {
-            String description = line.substring(3).split("from:")[0].trim();
-            String[] dates = line.split("from:")[1].split("to:");
+            line = line.replace("[E]", "");
+            String[] eventParts = line.split("from:");
+            String eventParts2 = (eventParts.length > 1) ? eventParts[1] : "";
+            String[] eventParts3 = line.split("to:");
+            String eventParts4 = (eventParts3.length > 1) ? eventParts3[1] : "";
            // LocalDateTime from = parseDate(dates[0].trim());
             //LocalDateTime to = parseDate(dates[1].trim());
-            Event event = new Event(description, dates[0], dates[1]);
+            Event event = new Event(eventParts[0], eventParts2, eventParts4);
             if (isDone) event.markDone();
             return event;
         }
 
-        return null;  // If the task type doesn't match, return null
+        return null;
     }
 
 
