@@ -6,19 +6,34 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import chatbot.tasklist.TaskList;
 import chatbot.task.*;
 
+/**
+ * Handles saving and loading tasks to and from a text file.
+ * Supports Todo, Deadline, and Event tasks.
+ */
 public class Storage {
+
     private final String filepath;
     private final String parentFolder;
 
+    /**
+     * Constructs a Storage object with the specified folder and file path.
+     *
+     * @param parentFolder the folder to store the file in
+     * @param filepath     the file path for storing tasks
+     */
     public Storage(String parentFolder, String filepath) {
         this.parentFolder = parentFolder;
         this.filepath = filepath;
     }
 
+    /**
+     * Loads tasks from the file into an ArrayList of Task objects.
+     *
+     * @return an ArrayList of tasks read from the file
+     */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filepath);
@@ -42,6 +57,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Parses a single line of text from the storage file into a Task object.
+     *
+     * @param line a line from the storage file
+     * @return the corresponding Task object, or null if the line is invalid
+     */
     private Task parseTask(String line) {
         line = line.trim();
 
@@ -86,7 +107,12 @@ public class Storage {
         return null;
     }
 
-
+    /**
+     * Saves the tasks in the TaskList to the file.
+     * Creates parent folder and file if they do not exist.
+     *
+     * @param taskList the TaskList containing tasks to save
+     */
     public void saveTasks(TaskList taskList) {
         try {
             File folder = new File(parentFolder);

@@ -28,6 +28,11 @@ public class MarkCommand extends Command {
         ui.showMessage(task.toString());
     }
 
+    /**
+     * Indicates whether this command exits the application.
+     *
+     * @return false because MarkCommand does not terminate the chatbot
+     */
     @Override
     public boolean isExit(){
         return false;

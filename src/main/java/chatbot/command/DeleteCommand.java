@@ -5,22 +5,47 @@ import chatbot.ui.Ui;
 import chatbot.storage.Storage;
 import chatbot.task.Task;
 
+
+/**
+ * Represents a command to delete a task from the TaskList.
+ * When executed, it removes the task at the specified index.
+ */
 public class DeleteCommand extends Command {
+
     private int taskIndex;  // The index of the task to delete
 
+    /**
+     * Constructs a DeleteCommand with the specified task index.
+     *
+     * @param taskIndex the index of the task to delete (0-based)
+     */
     public DeleteCommand(int taskIndex) {
         this.taskIndex = taskIndex;
     }
 
+    /**
+     * Executes the DeleteCommand:
+     * - Deletes the task at the given index from the TaskList
+     * - Can be extended to show a confirmation message via Ui
+     *
+     * @param tasks   the TaskList to delete the task from
+     * @param ui      the Ui instance to display messages
+     * @param storage the Storage instance for persistence
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        Task taskToRemove = tasks.getTask(taskIndex);
+        //Task taskToRemove = tasks.getTask(taskIndex);
         tasks.deleteTask(taskIndex);
         //ui.showTaskRemoved(taskToRemove);
     }
 
+    /**
+     * Indicates whether this command exits the application.
+     *
+     * @return false because DeleteCommand does not terminate the chatbot
+     */
     @Override
     public boolean isExit() {
-        return false;  // chatbot.command.DeleteCommand doesn't exit the program
+        return false;
     }
 }

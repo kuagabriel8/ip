@@ -1,11 +1,21 @@
 package chatbot.parser;
 
 import chatbot.command.*;
-import chatbot.task.Todo;
 import chatbot.task.*;
 
+/**
+ * Parses user input strings into corresponding Command objects.
+ * The parser handles commands such as todo, deadline, event, delete, mark, unmark, save, list, and bye.
+ */
 public class Parser {
 
+    /**
+     * Parses a full command string from the user and returns a corresponding Command object.
+     *
+     * @param fullCommand the complete input string from the user
+     * @return a Command object corresponding to the input
+     * @throws Exception if the command is unrecognized or arguments are missing
+     */
     public static Command parse(String fullCommand) throws Exception {
         String[] parts = fullCommand.split(" ", 2);
         String command = parts[0];
