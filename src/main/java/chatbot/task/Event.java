@@ -1,6 +1,6 @@
 package chatbot.task;
 
-import chatbot.exception.*;
+import chatbot.exception.EmptyArgumentException;
 
 public class Event extends Task {
     protected String from;
