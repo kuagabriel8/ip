@@ -13,8 +13,8 @@ import chatbot.parser.Parser;
  */
 public class Chatbot9000 {
     private static final String LINE = "____________________________________________________________";
-    private static final String parentFolder = "data";
-    private static final String filepath = "data/chatbot.Chatbot9000.txt";
+    private static final String PARENT_FOLDER = "data";
+    private static final String FILE_PATH = "data/chatbot.Chatbot9000.txt";
 
     private final Storage storage;
     private TaskList taskList;
@@ -24,7 +24,7 @@ public class Chatbot9000 {
      * Constructs a Chatbot9000 instance and initializes storage, UI, and task list.
      */
     public Chatbot9000() {
-        this.storage = new Storage(parentFolder, filepath);
+        this.storage = new Storage(PARENT_FOLDER, FILE_PATH);
         this.ui = new Ui();
         this.taskList = new TaskList(storage.loadTasks());
     }
@@ -106,5 +106,8 @@ public class Chatbot9000 {
             throw new chatbot.exception.EmptyArgumentException(message);
         }
     }*/
+
+
+
 
 }
