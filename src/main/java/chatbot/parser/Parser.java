@@ -59,8 +59,12 @@ public class Parser {
         case "list":
             return new ListCommand();
 
-        default:
-            throw new Exception("I'm sorry, but I don't know what that means.");
+            case "find":
+                if (arguments.isEmpty()) throw new Exception("Provide a keyword to find.");
+                return new FindCommand(arguments);
+
+            default:
+                throw new Exception("I'm sorry, but I don't know what that means.");
         }
     }
 }
