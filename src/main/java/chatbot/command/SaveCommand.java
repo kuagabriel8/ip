@@ -12,9 +12,14 @@ public class SaveCommand extends Command {
         ui.showMessage("Tasks have been successfully saved!");
     }
 
+    /**
+     * Indicates whether this command exits the application.
+     *
+     * @return false because SaveCommand does not terminate the chatbot
+     */
     @Override
     public boolean isExit() {
-        return false;  // this command doesn't exit the program
+        return false;
     }
 }
 
