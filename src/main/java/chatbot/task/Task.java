@@ -51,6 +51,6 @@ public class Task {
      */
     @Override
     public String toString() {
-        return (done? "[X] " : "[ ] ") + description;
+        return (done ? "[X] " : "[ ] ") + description;
     }
 }
