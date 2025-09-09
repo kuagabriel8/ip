@@ -4,7 +4,6 @@ import chatbot.storage.Storage;
 import chatbot.task.Task;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
-
 import java.util.ArrayList;
 
 public class FindCommand  extends Command {
@@ -27,7 +26,7 @@ public class FindCommand  extends Command {
      * @param storage the Storage instance (not used in this command)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks.getTasks()) {
             if (task.toString().toLowerCase().contains(keyword.toLowerCase())) {
@@ -37,7 +36,7 @@ public class FindCommand  extends Command {
 
         if (matchingTasks.isEmpty()) {
             ui.showMessage("No matching tasks found for: " + keyword);
-            return;
+            return null;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -48,7 +47,7 @@ public class FindCommand  extends Command {
             index++;
         }
 
-        ui.showMessage(sb.toString().trim());
+        return ui.showMessage(sb.toString().trim());
     }
 
     @Override

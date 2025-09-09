@@ -1,13 +1,8 @@
 package chatbot.tasklist;
 
-import chatbot.command.Command;
-import chatbot.parser.Parser;
-import chatbot.storage.Storage;
 import chatbot.task.Task;
-import chatbot.ui.Ui;
 
 import java.util.ArrayList;
-import java.lang.StringBuilder;
 
 /**
  * Represents a list of tasks and provides methods to manage them.
@@ -22,11 +17,11 @@ public class TaskList {
      * @param tasks an ArrayList of Task objects to initialize the TaskList
      */
     public TaskList(ArrayList<Task> tasks) {
-      //  if (tasks == null) {
+            //  if (tasks == null) {
             this.tasks = tasks;
-   //     } else {
-       //     this.tasks = new ArrayList<>();
-    //    }
+            //     } else {
+            //     this.tasks = new ArrayList<>();
+            //    }
     }
 
     /**
@@ -62,8 +57,9 @@ public class TaskList {
      *
      * @param index the index of the task to delete
      */
-    public void deleteTask(int index) {
+    public String deleteTask(int index) {
         tasks.remove(index);
+        return "deleting this task" + "\n" + tasks.get(index).toString();
     }
 
     /**
@@ -71,9 +67,7 @@ public class TaskList {
      *
      * @return the size of the task list
      */
-    public int size() {
-         return tasks.size();
-    }
+    public int size() { return tasks.size(); }
 
     /**
      * Returns a string representation of the task list.
@@ -88,7 +82,7 @@ public class TaskList {
             result.append((i + 1) + ". " + tasks.get(i));
 
             if (i < tasks.size() - 1) {
-                result.append("\n");  // Add newline except for the last task
+                result.append("\n"); // Add newline except for the last task
             }
         }
 

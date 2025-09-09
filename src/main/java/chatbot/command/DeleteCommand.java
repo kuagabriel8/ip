@@ -1,9 +1,8 @@
 package chatbot.command;
 
+import chatbot.storage.Storage;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
-import chatbot.storage.Storage;
-import chatbot.task.Task;
 
 
 /**
@@ -33,9 +32,9 @@ public class DeleteCommand extends Command {
      * @param storage the Storage instance for persistence
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         //Task taskToRemove = tasks.getTask(taskIndex);
-        tasks.deleteTask(taskIndex);
+        return tasks.deleteTask(taskIndex);
         //ui.showTaskRemoved(taskToRemove);
     }
 

@@ -1,5 +1,2 @@
-[T][ ] read
-[E][ ]  sleep  from:   now  to:  tmr to:   tmr
-[T][ ] read
-[E][ ]  /sleep  from:  /to forever to: to: 
-[T][ ] hi
+[E][ ] sleep from: now to: later
+[D][ ] read by: 2025-09-09T17:26:35.027302500

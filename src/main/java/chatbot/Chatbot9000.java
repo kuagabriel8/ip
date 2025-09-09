@@ -1,10 +1,11 @@
 package chatbot;
 
-import chatbot.tasklist.TaskList;
-import chatbot.ui.Ui;
-import chatbot.storage.Storage;
 import chatbot.command.Command;
 import chatbot.parser.Parser;
+import chatbot.response.Response;
+import chatbot.storage.Storage;
+import chatbot.tasklist.TaskList;
+import chatbot.ui.Ui;
 
 
 /**
@@ -12,7 +13,7 @@ import chatbot.parser.Parser;
  * Handles reading user input, parsing commands, executing commands, and interacting with the user.
  */
 public class Chatbot9000 {
-    private static final String LINE = "____________________________________________________________";
+    //private static final String LINE = "____________________________________________________________";
     private static final String PARENT_FOLDER = "data";
     private static final String FILE_PATH = "data/chatbot.Chatbot9000.txt";
 
@@ -29,24 +30,29 @@ public class Chatbot9000 {
         this.taskList = new TaskList(storage.loadTasks());
     }
 
+    public Response getResponse(String input) {
+        try {
+            Command c = Parser.parse(input);
+            String msg = c.execute(taskList, ui, storage);
+            return new Response(msg, c.isExit());
+        } catch (Exception e) {
+            return new Response(e.getMessage(), false);
+        }
+    }
+
     /**
      * Starts the chatbot by greeting the user and entering the command loop.
      * Continuously reads and executes commands until the exit command is issued.
      */
     public void start() {
-        ui.greetUser();
+        //ui.greetUser();
         boolean isExit = false;
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
-                ui.showLine();
-                Command c = Parser.parse(fullCommand);
-                c.execute(taskList, ui, storage);
-                isExit = c.isExit();
+                getResponse(fullCommand);
             } catch (Exception e) {
                 ui.showMessage(e.getMessage());
-            } finally {
-                ui.showLine();
             }
         }
     }

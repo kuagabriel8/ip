@@ -1,9 +1,11 @@
 package chatbot.command;
 
-import chatbot.tasklist.TaskList;
-import chatbot.ui.Ui;
 import chatbot.storage.Storage;
 import chatbot.task.Task;
+import chatbot.tasklist.TaskList;
+import chatbot.ui.Ui;
+
+
 
 /**
  * Represents a command to add a task to the TaskList.
@@ -34,11 +36,11 @@ public class AddCommand extends Command {
      * @param storage the Storage instance for persistence
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         tasks.addTask(task);
-        ui.showMessage("Got it. I've added this task:");
-        ui.showMessage(task.toString());
-        ui.showMessage("Now you have " + tasks.size() + " tasks in the list.");
+        return ui.showMessage("Got it. I've added this task:" + "\n"
+                + task.toString() + '\n'
+                + "Now you have " + tasks.size() + " tasks in the list.");
     }
 
     /**

@@ -1,8 +1,9 @@
 package chatbot.command;
 
+import chatbot.storage.Storage;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
-import chatbot.storage.Storage;
+
 
 /**
  * Abstract class representing a command in the chatbot system.
@@ -22,7 +23,7 @@ public abstract class Command {
      * @param ui      the Ui instance to interact with the user
      * @param storage the Storage instance to save or load tasks
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage);
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage);
 
     /**
      * Indicates whether this command should terminate the chatbot session.
