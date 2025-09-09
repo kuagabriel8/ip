@@ -22,10 +22,9 @@ public class ListCommand extends Command {
      * @param storage the Storage instance for persistence (not used)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         if (tasks.getTasks().isEmpty()) {
-            ui.showMessage("Your task list is empty!");
-            return;
+            return ui.showMessage("Your task list is empty!");
         }
 
         StringBuilder sb = new StringBuilder();
@@ -36,7 +35,7 @@ public class ListCommand extends Command {
             index++;
         }
 
-        ui.showMessage(sb.toString().trim());
+        return ui.showMessage(sb.toString().trim());
     }
 
     /**

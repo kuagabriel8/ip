@@ -69,7 +69,7 @@ public class Storage {
     private Task parseTask(String line) {
         line = line.trim();
 
-        boolean isDone = line.startsWith("[X]", 3);
+        boolean isDone = line.contains("[X]");
         if (isDone) {
             line = line.replace("[X]", "");
 
@@ -95,16 +95,34 @@ public class Storage {
             return deadline;
 
         } else if (line.startsWith("[E]")) {
-            line = line.replace("[E]", "");
+            /*line = line.replace("[E]", "");
+            line.trim();
             String[] eventParts = line.split("from:");
             String eventParts2 = (eventParts.length > 1) ? eventParts[1] : "";
             String[] eventParts3 = line.split("to:");
             String eventParts4 = (eventParts3.length > 1) ? eventParts3[1] : "";
-           // LocalDateTime from = parseDate(dates[0].trim());
-            //LocalDateTime to = parseDate(dates[1].trim());
             Event event = new Event(eventParts[0], eventParts2, eventParts4);
             if (isDone) event.markDone();
+            return event;*/
+            // Step 1: Remove the '[E]' tag at the beginning of the string and trim any extra spaces
+            line = line.replace("[E]", "").trim();  // Now `line` should be: "read from: now to: later"
+
+            // Step 2: Split on "from:" and "to:" to extract the relevant parts
+            String[] eventParts = line.split("from:");  // Split by "from:"
+            String eventPart1 = (eventParts.length > 1) ? eventParts[1].trim() : ""; // Get the part after "from:"
+
+            // Step 3: Split by "to:" to extract the second part
+            String[] eventParts2 = eventPart1.split("to:");  // Split by "to:"
+            String eventPart2 = (eventParts2.length > 1) ? eventParts2[1].trim() : ""; // Get the part after "to:"
+
+            // Step 4: Create the Event object with parsed parts
+            Event event = new Event(eventParts[0].trim(), eventParts2[0].trim(), eventPart2);
+
+            // Step 5: If the event is marked as done, mark it as done
+            if (isDone) event.markDone();
+
             return event;
+
         }
 
         return null;

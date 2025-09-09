@@ -1,8 +1,8 @@
 package chatbot.command;
 
+import chatbot.storage.Storage;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
-import chatbot.storage.Storage;
 
 /**
  * Represents a command that terminates the chatbot session.
@@ -19,8 +19,8 @@ public class ExitCommand extends Command {
      * @param storage the Storage instance for persistence (not used)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showMessage("Bye! Hope to see you again soon.");
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        return ui.showMessage("Bye! Hope to see you again soon.");
     }
 
     /**

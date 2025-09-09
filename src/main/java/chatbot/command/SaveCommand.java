@@ -21,9 +21,9 @@ public class SaveCommand extends Command {
      * @param storage the Storage to save the tasks
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        storage.saveTasks(tasks);  // save all tasks to file
-        ui.showMessage("Tasks have been successfully saved!");
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        storage.saveTasks(tasks); // save all tasks to file
+        return ui.showMessage("Tasks have been successfully saved!");
     }
 
     /**

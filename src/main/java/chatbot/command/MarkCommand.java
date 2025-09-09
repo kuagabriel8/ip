@@ -35,7 +35,7 @@ public class MarkCommand extends Command {
      * @param storage the Storage to save the tasks (not used here)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         Task task = tasks.getTask(index);
         if (mark) {
             task.markDone();
@@ -43,8 +43,8 @@ public class MarkCommand extends Command {
             task.unmarkDone();
         }
         String status = mark ? "completed" : "not completed";
-        ui.showMessage("Okay, I've marked this task as " + status + ":");
-        ui.showMessage(task.toString());
+        return ui.showMessage("Okay, I've marked this task as " + status + ":" + "\n" + task.toString());
+        //ui.showMessage(task.toString());
     }
 
     /**
@@ -53,7 +53,6 @@ public class MarkCommand extends Command {
      * @return false because MarkCommand does not terminate the chatbot
      */
     @Override
-    public boolean isExit(){
-        return false;
+    public boolean isExit(){ return false;
     }
 }
