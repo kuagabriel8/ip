@@ -35,8 +35,7 @@ public class FindCommand  extends Command {
         }
 
         if (matchingTasks.isEmpty()) {
-            ui.showMessage("No matching tasks found for: " + keyword);
-            return null;
+            return "No matching tasks found for: " + keyword;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -47,7 +46,7 @@ public class FindCommand  extends Command {
             index++;
         }
 
-        return ui.showMessage(sb.toString().trim());
+        return sb.toString().trim();
     }
 
     @Override

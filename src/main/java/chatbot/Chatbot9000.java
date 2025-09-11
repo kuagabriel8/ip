@@ -52,7 +52,7 @@ public class Chatbot9000 {
                 String fullCommand = ui.readCommand();
                 getResponse(fullCommand);
             } catch (Exception e) {
-                ui.showMessage(e.getMessage());
+                e.getMessage();
             }
         }
     }

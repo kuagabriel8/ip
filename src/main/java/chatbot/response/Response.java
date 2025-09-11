@@ -2,16 +2,16 @@ package chatbot.response;
 
 public class Response{
 
-    private String response;
+    private String responseMessage;
     private boolean isExit;
 
-    public Response(String response, boolean isExit) {
-        this.response = response;
+    public Response(String responseMessage, boolean isExit) {
+        this.responseMessage = responseMessage;
         this.isExit = isExit;
     }
 
     public String getResponse() {
-        return response;
+        return responseMessage;
     }
 
     public boolean isExit() {

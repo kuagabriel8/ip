@@ -2,7 +2,7 @@ package chatbot.parser;
 
 import chatbot.command.*;
 import chatbot.task.*;
-
+import chatbot.exception.InvalidCommandException;
 /**
  * Parses user input strings into corresponding Command objects.
  * The parser handles commands such as todo, deadline, event, delete, mark, unmark, save, list, and bye.
@@ -64,7 +64,7 @@ public class Parser {
             return new FindCommand(arguments);
 
         default:
-            throw new Exception("I'm sorry, but I don't know what that means.");
+            throw new InvalidCommandException(command);
         }
     }
 }

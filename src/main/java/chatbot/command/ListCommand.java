@@ -24,7 +24,7 @@ public class ListCommand extends Command {
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
         if (tasks.getTasks().isEmpty()) {
-            return ui.showMessage("Your task list is empty!");
+            return "Your task list is empty!";
         }
 
         StringBuilder sb = new StringBuilder();
@@ -35,7 +35,7 @@ public class ListCommand extends Command {
             index++;
         }
 
-        return ui.showMessage(sb.toString().trim());
+        return sb.toString().trim();
     }
 
     /**

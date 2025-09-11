@@ -43,8 +43,7 @@ public class MarkCommand extends Command {
             task.unmarkDone();
         }
         String status = mark ? "completed" : "not completed";
-        return ui.showMessage("Okay, I've marked this task as " + status + ":" + "\n" + task.toString());
-        //ui.showMessage(task.toString());
+        return "Okay, I've marked this task as " + status + ":" + "\n" + task.toString();
     }
 
     /**
