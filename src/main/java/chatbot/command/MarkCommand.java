@@ -36,7 +36,11 @@ public class MarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "Ui cannot be null";
+        assert storage != null : "Storage cannot be null";
         Task task = tasks.getTask(index);
+        assert task != null : "Task cannot be null";
         if (mark) {
             task.markDone();
         } else {
@@ -44,7 +48,6 @@ public class MarkCommand extends Command {
         }
         String status = mark ? "completed" : "not completed";
         return ui.showMessage("Okay, I've marked this task as " + status + ":" + "\n" + task.toString());
-        //ui.showMessage(task.toString());
     }
 
     /**
@@ -53,6 +56,7 @@ public class MarkCommand extends Command {
      * @return false because MarkCommand does not terminate the chatbot
      */
     @Override
-    public boolean isExit(){ return false;
+    public boolean isExit(){
+        return false;
     }
 }
