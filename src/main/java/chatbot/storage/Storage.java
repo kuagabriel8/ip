@@ -23,6 +23,7 @@ import chatbot.tasklist.TaskList;
  */
 public class Storage {
 
+    private final String samplefilepath;
     private final String filepath;
     private final String parentFolder;
 
@@ -32,7 +33,8 @@ public class Storage {
      * @param parentFolder the folder to store the file in
      * @param filepath     the file path for storing tasks
      */
-    public Storage(String parentFolder, String filepath) {
+    public Storage(String parentFolder, String filepath, String samplefilepath) {
+        this.samplefilepath = samplefilepath;
         this.parentFolder = parentFolder;
         this.filepath = filepath;
     }
@@ -44,7 +46,7 @@ public class Storage {
      */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(filepath);
+        File file = new File(samplefilepath);
 
         if (!file.exists()) {
             return tasks;
