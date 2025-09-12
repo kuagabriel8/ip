@@ -17,6 +17,7 @@ import chatbot.ui.Ui;
 public class Chatbot9000 {
     private static final String PARENT_FOLDER = "data";
     private static final String FILE_PATH = "data/chatbot.Chatbot9000.txt";
+    private static final String SAMPLE_FILEPATH = "data/sample.txt";
 
     private final Storage storage;
     private TaskList taskList;
@@ -26,25 +27,31 @@ public class Chatbot9000 {
      * Constructs a Chatbot9000 instance and initializes storage, UI, and task list.
      */
     public Chatbot9000() {
-        this.storage = new Storage(PARENT_FOLDER, FILE_PATH);
+        this.storage = new Storage(PARENT_FOLDER, FILE_PATH, SAMPLE_FILEPATH);
         this.ui = new Ui();
         this.taskList = new TaskList(storage.loadTasks());
     }
+
+    public Response getGreeting() {
+        String responseMessage = "Hello! I'm Chatbot9000\nWhat can I do for you?\n"
+                +
+                "Input 'help' to access the help page\nInput 'reset' to clear sample data";
+        return new Response(responseMessage, false);
+    }
+
 
     public Response getResponse(String input) {
         try {
             Command c = Parser.parse(input);
             String msg = c.execute(taskList, ui, storage);
             return new Response(msg, c.isExit());
-        }
-        catch (InvalidCommandException | EmptyArgumentException e) {
-           String errorMsg = e.getMessage();
+        } catch (InvalidCommandException | EmptyArgumentException e) {
+            String errorMsg = e.getMessage();
+            return new Response(errorMsg, false);
+        } catch (Exception e) {
+            String errorMsg = e.toString();
             return new Response(errorMsg, false);
         }
-        catch (Exception e) {
-            String errorMsg = e.toString();
-           return new Response(errorMsg, false);
-         }
     }
 
     /**
@@ -58,11 +65,7 @@ public class Chatbot9000 {
             try {
                 String fullCommand = ui.readCommand();
                 getResponse(fullCommand);
-            }
-           // catch (InvalidCommandException | EmptyArgumentException e){
-            //    e.toString();
-           // }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.getMessage();
             }
         }

@@ -32,14 +32,20 @@ public class MainWindow extends AnchorPane {
     private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     @FXML
-    public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-    }
+    public void initialize() { scrollPane.vvalueProperty().bind(dialogContainer.heightProperty()); }
 
     /** Injects the Duke instance */
     public void setChatbot9000(Chatbot9000 c) {
         chatbot9000 = c;
+
+        // Show greeting message once at startup
+        Response greet = chatbot9000.getGreeting();
+        dialogContainer.getChildren().add(
+                DialogBox.getDukeDialog(greet.getResponse(), dukeImage)
+        );
     }
+
+
 
     /**
      * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to

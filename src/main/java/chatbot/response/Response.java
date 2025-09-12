@@ -7,7 +7,6 @@ package chatbot.response;
  * and a flag indicating whether the chatbot should exit after this response.
  */
 public class Response{
-
     private String responseMessage;
     private boolean isExit;
 

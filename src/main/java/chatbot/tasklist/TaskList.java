@@ -68,6 +68,11 @@ public class TaskList {
         return "deleting this task" + "\n" + tasks.get(index).toString();
     }
 
+    public String reset(){
+        tasks.clear();
+        return "reset completed";
+    }
+
     /**
      * Returns the number of tasks in the list.
      *

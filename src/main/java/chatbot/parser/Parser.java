@@ -5,8 +5,10 @@ import chatbot.command.Command;
 import chatbot.command.DeleteCommand;
 import chatbot.command.ExitCommand;
 import chatbot.command.FindCommand;
+import chatbot.command.HelpCommand;
 import chatbot.command.ListCommand;
 import chatbot.command.MarkCommand;
+import chatbot.command.ResetCommand;
 import chatbot.command.SaveCommand;
 import chatbot.exception.EmptyArgumentException;
 import chatbot.exception.InvalidCommandException;
@@ -33,8 +35,9 @@ public class Parser {
         EVENT,
         DELETE,
         FIND,
+        HELP,
+        RESET,
         SAVE;
-
     }
 
     /**
@@ -129,6 +132,12 @@ public class Parser {
             }
             assert arguments != null : "arguments must not be null";
             return new FindCommand(arguments);
+
+        case HELP:
+            return new HelpCommand();
+
+        case RESET:
+            return new ResetCommand();
 
         default:
             throw new InvalidCommandException(fullCommand);
