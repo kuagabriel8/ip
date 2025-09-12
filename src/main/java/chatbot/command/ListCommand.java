@@ -27,15 +27,12 @@ public class ListCommand extends Command {
             return ui.showMessage("Your task list is empty!");
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Here are your tasks:\n");
-        int index = 1;
-        for (Task task : tasks.getTasks()) {
-            sb.append(index).append(". ").append(task).append("\n");
-            index++;
-        }
+        String taskListStr =
+                java.util.stream.IntStream.range(0, tasks.getTasks().size())
+                        .mapToObj(i -> (i + 1) + ". " + tasks.getTasks().get(i))
+                        .collect(java.util.stream.Collectors.joining("\n"));
 
-        return ui.showMessage(sb.toString().trim());
+        return "Here are your tasks:\n" + taskListStr;
     }
 
     /**
