@@ -27,7 +27,7 @@ public class ListCommand extends Command {
         assert ui != null : "Ui cannot be null";
         assert storage != null : "Storage cannot be null";
         if (tasks.getTasks().isEmpty()) {
-            return ui.showMessage("Your task list is empty!");
+            return "Your task list is empty!";
         }
 
         StringBuilder sb = new StringBuilder();
@@ -38,7 +38,7 @@ public class ListCommand extends Command {
             index++;
         }
 
-        return ui.showMessage(sb.toString().trim());
+        return sb.toString().trim();
     }
 
     /**

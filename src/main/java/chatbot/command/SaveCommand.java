@@ -26,7 +26,7 @@ public class SaveCommand extends Command {
         assert ui != null : "Ui cannot be null";
         assert storage != null : "Storage cannot be null";
         storage.saveTasks(tasks); // save all tasks to file
-        return ui.showMessage("Tasks have been successfully saved!");
+        return "Tasks have been successfully saved!";
     }
 
     /**

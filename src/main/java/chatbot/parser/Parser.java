@@ -8,6 +8,8 @@ import chatbot.command.FindCommand;
 import chatbot.command.ListCommand;
 import chatbot.command.MarkCommand;
 import chatbot.command.SaveCommand;
+import chatbot.exception.EmptyArgumentException;
+import chatbot.exception.InvalidCommandException;
 import chatbot.task.Deadline;
 import chatbot.task.Event;
 import chatbot.task.Todo;
@@ -33,18 +35,6 @@ public class Parser {
         FIND,
         SAVE;
 
-        /*public static Commands fromString(String input) {
-            try {
-                for (Commands c : Commands.values()) {
-                    if (c.name().equalsIgnoreCase(input)) {
-                        return c;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            return null;
-        }*/
     }
 
     /**
@@ -52,17 +42,29 @@ public class Parser {
      *
      * @param fullCommand the complete input string from the user
      * @return a Command object corresponding to the input
-     * @throws Exception if the command is unrecognized or arguments are missing
+     * @throws InvalidCommandException if the command is unrecognized
+     * @throws EmptyArgumentException if arguments are missing
      */
-    public static Command parse(String fullCommand) throws Exception {
+    public static Command parse(String fullCommand) throws EmptyArgumentException, InvalidCommandException {
 
+        if (fullCommand == null || fullCommand.isBlank()) {
+            throw new EmptyArgumentException("Please enter a command.");
+        }
         // Precondition: fullCommand must not be null or empty
         assert fullCommand != null : "fullCommand must not be null";
         assert !fullCommand.isBlank() : "fullCommand must not be blank";
 
-        String[] parts = fullCommand.split(" ", 2);
-        Commands command = Commands.valueOf(parts[0].toUpperCase().trim());
-        String arguments = (parts.length > 1) ? parts[1] : "";
+        String[] parts = fullCommand.trim().split("\\s+", 2);
+        String token = parts[0].toUpperCase();
+        String arguments = (parts.length > 1) ? parts[1].trim() : "";
+
+        final Commands command;
+        try {
+            command = Commands.valueOf(token);
+        } catch (IllegalArgumentException e) {
+            System.err.println("DEBUG unknown command token: " + token); // prints to terminal
+            throw new InvalidCommandException(fullCommand);
+        }
 
         // Invariant: command should always be non-empty
         assert command != null : "command part should not be empty";
@@ -70,25 +72,25 @@ public class Parser {
         switch (command) {
         case TODO:
             if (arguments.isEmpty()) {
-                throw new Exception("The description of a todo cannot be empty.");
+                throw new EmptyArgumentException("The description of a todo cannot be empty.");
             }
             return new AddCommand(new Todo(arguments));
 
         case DEADLINE:
             if (arguments.isEmpty()) {
-                throw new Exception("The description of a deadline cannot be empty.");
+                throw new EmptyArgumentException("The description of a deadline cannot be empty.");
             }
             return new AddCommand(Deadline.parse(arguments));
 
         case EVENT:
             if (arguments.isEmpty()) {
-                throw new Exception("The description of an event cannot be empty.");
+                throw new EmptyArgumentException("The description of an event cannot be empty.");
             }
             return new AddCommand(Event.parse(arguments));
 
         case DELETE:
             if (arguments.isEmpty()) {
-                throw new Exception("Provide the index of the task to delete.");
+                throw new EmptyArgumentException("Provide the index of the task to delete.");
             }
             int deleteIndex = Integer.parseInt(arguments) - 1;
             assert deleteIndex >= 0 : "The index of the task should be greater than 0.";
@@ -96,7 +98,7 @@ public class Parser {
 
         case MARK:
             if (arguments.isEmpty()) {
-                throw new Exception("Provide the index of the task to mark.");
+                throw new EmptyArgumentException("Provide the index of the task to mark.");
             }
             assert arguments != null : "arguments must not be null";
             int markIndex = Integer.parseInt(arguments) - 1;
@@ -105,7 +107,7 @@ public class Parser {
 
         case UNMARK:
             if (arguments.isEmpty()) {
-                throw new Exception("Provide the index of the task to unmark.");
+                throw new EmptyArgumentException("Provide the index of the task to unmark.");
             }
             assert arguments != null : "arguments must not be null";
             int unmarkIndex = Integer.parseInt(arguments) - 1;
@@ -123,13 +125,13 @@ public class Parser {
 
         case FIND:
             if (arguments.isEmpty()) {
-                throw new Exception("Provide a keyword to find.");
+                throw new EmptyArgumentException("Provide a keyword to find.");
             }
             assert arguments != null : "arguments must not be null";
             return new FindCommand(arguments);
 
         default:
-            throw new Exception("I'm sorry, but I don't know what that means.");
+            throw new InvalidCommandException(fullCommand);
         }
     }
 }

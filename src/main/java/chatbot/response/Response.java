@@ -7,22 +7,23 @@ package chatbot.response;
  * and a flag indicating whether the chatbot should exit after this response.
  */
 public class Response{
-    private String response;
+
+    private String responseMessage;
     private boolean isExit;
 
     /**
      * Constructs a Response object with the given message and exit flag.
      *
-     * @param response the message text of the response
+     * @param responseMessage the message text of the response
      * @param isExit true if the chatbot should terminate after this response; false otherwise
      */
-    public Response(String response, boolean isExit) {
-        this.response = response;
+    public Response(String responseMessage, boolean isExit) {
+        this.responseMessage = responseMessage;
         this.isExit = isExit;
     }
 
     public String getResponse() {
-        return response;
+        return responseMessage;
     }
 
     public boolean isExit() {

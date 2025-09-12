@@ -51,9 +51,9 @@ public class AddCommand extends Command {
             taskStr = task.toString();
         }
         assert taskStr != null : "Task description cannot be null";
-        return ui.showMessage("Got it. I've added this task:" + "\n"
+        return "Got it. I've added this task:" + "\n"
                 + taskStr + '\n'
-                + "Now you have " + tasks.size() + " tasks in the list.");
+                + "Now you have " + tasks.size() + " tasks in the list.";
     }
 
     /**
