@@ -1,11 +1,14 @@
 package chatbot.command;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import chatbot.storage.Storage;
 import chatbot.task.Task;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
+
+
 
 /**
  * Represents a command to find all tasks in the TaskList.
@@ -35,26 +38,24 @@ public class FindCommand extends Command {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "Ui cannot be null";
         assert storage != null : "Storage cannot be null";
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks.getTasks()) {
-            if (task.toString().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
+        String loweredKeyword = keyword.toLowerCase();
+
+        // Filter matching tasks
+        List<Task> matchingTasks = tasks.getTasks().stream()
+                .filter(task -> task.toString().toLowerCase().contains(loweredKeyword))
+                .toList(); // Java 16+, otherwise use Collectors.toList()
 
         if (matchingTasks.isEmpty()) {
             return "No matching tasks found for: " + keyword;
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Here are the matching tasks in your list:\n");
-        int index = 1;
-        for (Task task : matchingTasks) {
-            sb.append(index).append(".").append(task).append("\n");
-            index++;
-        }
+        // Format with index numbers using IntStream
+        String taskListStr = java.util.stream.IntStream.range(0, matchingTasks.size())
+                .mapToObj(i -> (i + 1) + ". " + matchingTasks.get(i))
+                .collect(java.util.stream.Collectors.joining("\n"));
 
-        return sb.toString().trim();
+        return "Here are the matching tasks in your list:\n" + taskListStr;
+
     }
 
     @Override
