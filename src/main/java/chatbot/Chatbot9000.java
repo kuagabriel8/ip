@@ -1,6 +1,8 @@
 package chatbot;
 
 import chatbot.command.Command;
+import chatbot.exception.EmptyArgumentException;
+import chatbot.exception.InvalidCommandException;
 import chatbot.parser.Parser;
 import chatbot.response.Response;
 import chatbot.storage.Storage;
@@ -13,7 +15,6 @@ import chatbot.ui.Ui;
  * Handles reading user input, parsing commands, executing commands, and interacting with the user.
  */
 public class Chatbot9000 {
-    //private static final String LINE = "____________________________________________________________";
     private static final String PARENT_FOLDER = "data";
     private static final String FILE_PATH = "data/chatbot.Chatbot9000.txt";
 
@@ -35,9 +36,15 @@ public class Chatbot9000 {
             Command c = Parser.parse(input);
             String msg = c.execute(taskList, ui, storage);
             return new Response(msg, c.isExit());
-        } catch (Exception e) {
-            return new Response(e.getMessage(), false);
         }
+        catch (InvalidCommandException | EmptyArgumentException e) {
+           String errorMsg = e.getMessage();
+            return new Response(errorMsg, false);
+        }
+        catch (Exception e) {
+            String errorMsg = e.toString();
+           return new Response(errorMsg, false);
+         }
     }
 
     /**
@@ -51,38 +58,13 @@ public class Chatbot9000 {
             try {
                 String fullCommand = ui.readCommand();
                 getResponse(fullCommand);
-            } catch (Exception e) {
-                ui.showMessage(e.getMessage());
             }
-        }
-    }
-
-    /**
-     * Enumeration of all supported chatbot commands.
-     */
-    public enum Commands {
-        LIST,
-        BYE,
-        MARK,
-        UNMARK,
-        TODO,
-        DEADLINE,
-        EVENT,
-        DELETE,
-        SAVE;
-
-
-        public static Commands fromString(String input) {
-            try {
-                for (Commands c : Commands.values()) {
-                    if (c.name().equalsIgnoreCase(input)) {
-                        return c;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
+           // catch (InvalidCommandException | EmptyArgumentException e){
+            //    e.toString();
+           // }
+            catch (Exception e) {
+                e.getMessage();
             }
-            return null;
         }
     }
 
@@ -94,26 +76,4 @@ public class Chatbot9000 {
     public static void main(String[] args) {
         new Chatbot9000().start();
     }
-
-    /*public static boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public static void checkEmptyArguments(String arguments, String message) throws chatbot.exception.EmptyArgumentException{
-        if (arguments == null || arguments.isEmpty()) {
-            throw new chatbot.exception.EmptyArgumentException(message);
-        }
-    }*/
-
-
-
-
 }

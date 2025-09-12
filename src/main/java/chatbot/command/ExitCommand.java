@@ -20,7 +20,11 @@ public class ExitCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
-        return ui.showMessage("Bye! Hope to see you again soon.");
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "Ui cannot be null";
+        assert storage != null : "Storage cannot be null";
+
+        return "Bye! Hope to see you again soon.";
     }
 
     /**
