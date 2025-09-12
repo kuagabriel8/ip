@@ -11,7 +11,7 @@ import chatbot.ui.Ui;
  */
 public class DeleteCommand extends Command {
 
-    private int taskIndex;  // The index of the task to delete
+    private int taskIndex; // The index of the task to delete
 
     /**
      * Constructs a DeleteCommand with the specified task index.
@@ -33,9 +33,11 @@ public class DeleteCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
-        //Task taskToRemove = tasks.getTask(taskIndex);
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "Ui cannot be null";
+        assert storage != null : "Storage cannot be null";
+
         return tasks.deleteTask(taskIndex);
-        //ui.showTaskRemoved(taskToRemove);
     }
 
     /**

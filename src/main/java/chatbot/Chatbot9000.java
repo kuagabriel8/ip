@@ -13,7 +13,6 @@ import chatbot.ui.Ui;
  * Handles reading user input, parsing commands, executing commands, and interacting with the user.
  */
 public class Chatbot9000 {
-    //private static final String LINE = "____________________________________________________________";
     private static final String PARENT_FOLDER = "data";
     private static final String FILE_PATH = "data/chatbot.Chatbot9000.txt";
 
@@ -58,35 +57,6 @@ public class Chatbot9000 {
     }
 
     /**
-     * Enumeration of all supported chatbot commands.
-     */
-    public enum Commands {
-        LIST,
-        BYE,
-        MARK,
-        UNMARK,
-        TODO,
-        DEADLINE,
-        EVENT,
-        DELETE,
-        SAVE;
-
-
-        public static Commands fromString(String input) {
-            try {
-                for (Commands c : Commands.values()) {
-                    if (c.name().equalsIgnoreCase(input)) {
-                        return c;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            return null;
-        }
-    }
-
-    /**
      * The main entry point of the program.
      *
      * @param args command-line arguments (not used)
@@ -94,26 +64,4 @@ public class Chatbot9000 {
     public static void main(String[] args) {
         new Chatbot9000().start();
     }
-
-    /*public static boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public static void checkEmptyArguments(String arguments, String message) throws chatbot.exception.EmptyArgumentException{
-        if (arguments == null || arguments.isEmpty()) {
-            throw new chatbot.exception.EmptyArgumentException(message);
-        }
-    }*/
-
-
-
-
 }

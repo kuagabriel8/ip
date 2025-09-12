@@ -1,16 +1,21 @@
 package chatbot.storage;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import chatbot.tasklist.TaskList;
-import chatbot.task.Task;
+
 import chatbot.task.Deadline;
 import chatbot.task.Event;
+import chatbot.task.Task;
 import chatbot.task.Todo;
+import chatbot.tasklist.TaskList;
+
+
+
 
 /**
  * Handles saving and loading tasks to and from a text file.
@@ -69,6 +74,14 @@ public class Storage {
     private Task parseTask(String line) {
         line = line.trim();
 
+        // Assertion to check the line format
+        // ^\[T|D|E\]  -> first box must be [T], [D], or [E]
+        // \[( |X)\]   -> second box must be [ ] or [X]
+        // .+          -> at least one character after the boxes (description)
+        assert line.matches("^\\[[TDE]\\]\\[( |X)\\].+")
+                : "Invalid task format: " + line;
+
+
         boolean isDone = line.contains("[X]");
         if (isDone) {
             line = line.replace("[X]", "");
@@ -82,44 +95,32 @@ public class Storage {
             //line = line.replace("[T]", "");
             String description = line.substring(3).trim();
             Task todo = new Todo(description);
-            if (isDone) todo.markDone();
+            if (isDone) {
+                todo.markDone();
+            }
             return todo;
 
         } else if (line.startsWith("[D]")) {
             line = line.replace("[D]", "");
             String[] deadlineParts = line.split("by:");
-            String by = (deadlineParts.length > 1) ? deadlineParts[1] : "";
-            //LocalDateTime by = parseDate(dateStr);
-            Deadline deadline = new Deadline(deadlineParts[0].trim(), by.trim());
-            if (isDone) deadline.markDone();
+            String byStr = (deadlineParts.length > 1) ? deadlineParts[1].trim() : "";
+            LocalDateTime by = LocalDateTime.parse(byStr);
+            Deadline deadline = new Deadline(deadlineParts[0].trim(), by.toString());
+            if (isDone) {
+                deadline.markDone();
+            }
             return deadline;
 
         } else if (line.startsWith("[E]")) {
-            /*line = line.replace("[E]", "");
-            line.trim();
+            line = line.replace("[E]", "").trim();
             String[] eventParts = line.split("from:");
-            String eventParts2 = (eventParts.length > 1) ? eventParts[1] : "";
-            String[] eventParts3 = line.split("to:");
-            String eventParts4 = (eventParts3.length > 1) ? eventParts3[1] : "";
-            Event event = new Event(eventParts[0], eventParts2, eventParts4);
-            if (isDone) event.markDone();
-            return event;*/
-            // Step 1: Remove the '[E]' tag at the beginning of the string and trim any extra spaces
-            line = line.replace("[E]", "").trim();  // Now `line` should be: "read from: now to: later"
-
-            // Step 2: Split on "from:" and "to:" to extract the relevant parts
-            String[] eventParts = line.split("from:");  // Split by "from:"
-            String eventPart1 = (eventParts.length > 1) ? eventParts[1].trim() : ""; // Get the part after "from:"
-
-            // Step 3: Split by "to:" to extract the second part
-            String[] eventParts2 = eventPart1.split("to:");  // Split by "to:"
-            String eventPart2 = (eventParts2.length > 1) ? eventParts2[1].trim() : ""; // Get the part after "to:"
-
-            // Step 4: Create the Event object with parsed parts
+            String eventPart1 = (eventParts.length > 1) ? eventParts[1].trim() : "";
+            String[] eventParts2 = eventPart1.split("to:");
+            String eventPart2 = (eventParts2.length > 1) ? eventParts2[1].trim() : "";
             Event event = new Event(eventParts[0].trim(), eventParts2[0].trim(), eventPart2);
-
-            // Step 5: If the event is marked as done, mark it as done
-            if (isDone) event.markDone();
+            if (isDone) {
+                event.markDone();
+            }
 
             return event;
 

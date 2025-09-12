@@ -1,8 +1,10 @@
 package chatbot.tasklist;
 
+import java.util.ArrayList;
+
 import chatbot.task.Task;
 
-import java.util.ArrayList;
+
 
 /**
  * Represents a list of tasks and provides methods to manage them.
@@ -17,11 +19,11 @@ public class TaskList {
      * @param tasks an ArrayList of Task objects to initialize the TaskList
      */
     public TaskList(ArrayList<Task> tasks) {
-            //  if (tasks == null) {
-            this.tasks = tasks;
-            //     } else {
-            //     this.tasks = new ArrayList<>();
-            //    }
+        //  if (tasks == null) {
+        this.tasks = tasks;
+        //     } else {
+        //     this.tasks = new ArrayList<>();
+        //    }
     }
 
     /**
@@ -49,6 +51,8 @@ public class TaskList {
      * @return the Task object at the specified index
      */
     public Task getTask(int index) {
+        assert index >= 0 : "Index cannot be negative";
+        assert index < tasks.size() : "Index out of bounds";
         return tasks.get(index);
     }
 
@@ -58,6 +62,8 @@ public class TaskList {
      * @param index the index of the task to delete
      */
     public String deleteTask(int index) {
+        assert index >= 0 : "Index cannot be negative";
+        assert index < tasks.size() : "Index out of bounds";
         tasks.remove(index);
         return "deleting this task" + "\n" + tasks.get(index).toString();
     }
