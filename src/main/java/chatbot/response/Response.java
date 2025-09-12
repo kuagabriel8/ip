@@ -11,12 +11,10 @@ public class Response{
     private String responseMessage;
     private boolean isExit;
 
-    public Response(String responseMessage, boolean isExit) {
-        this.responseMessage = responseMessage;
     /**
      * Constructs a Response object with the given message and exit flag.
      *
-     * @param response the message text of the response
+     * @param responseMessage the message text of the response
      * @param isExit true if the chatbot should terminate after this response; false otherwise
      */
     public Response(String responseMessage, boolean isExit) {

@@ -1,6 +1,8 @@
 package chatbot;
 
 import chatbot.command.Command;
+import chatbot.exception.EmptyArgumentException;
+import chatbot.exception.InvalidCommandException;
 import chatbot.parser.Parser;
 import chatbot.response.Response;
 import chatbot.storage.Storage;
@@ -34,9 +36,15 @@ public class Chatbot9000 {
             Command c = Parser.parse(input);
             String msg = c.execute(taskList, ui, storage);
             return new Response(msg, c.isExit());
-        } catch (Exception e) {
-            return new Response(e.getMessage(), false);
         }
+        catch (InvalidCommandException | EmptyArgumentException e) {
+           String errorMsg = e.getMessage();
+            return new Response(errorMsg, false);
+        }
+        catch (Exception e) {
+            String errorMsg = e.toString();
+           return new Response(errorMsg, false);
+         }
     }
 
     /**
@@ -50,7 +58,11 @@ public class Chatbot9000 {
             try {
                 String fullCommand = ui.readCommand();
                 getResponse(fullCommand);
-            } catch (Exception e) {
+            }
+           // catch (InvalidCommandException | EmptyArgumentException e){
+            //    e.toString();
+           // }
+            catch (Exception e) {
                 e.getMessage();
             }
         }

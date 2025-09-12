@@ -2,6 +2,10 @@ package chatbot.exception;
 
 public class InvalidCommandException extends Exception{
 
+    public InvalidCommandException() {
+        super("Invalid command. Please enter a valid command.");
+    }
+
     /**
      * Creates an InvalidCommandException with a custom message.
      *
@@ -10,4 +14,6 @@ public class InvalidCommandException extends Exception{
     public InvalidCommandException(String command) {
         super("Invalid command: \"" + command + "\". Please enter a valid command.");
     }
+
+
 }
