@@ -1,6 +1,7 @@
 package chatbot.command;
 
 import chatbot.storage.Storage;
+import chatbot.task.Deadline;
 import chatbot.task.Task;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
@@ -22,6 +23,7 @@ public class AddCommand extends Command {
      * @param task the task to be added to the TaskList
      */
     public AddCommand(Task task) {
+        assert task != null : "Task cannot be null";
         this.task = task;
     }
 
@@ -37,9 +39,20 @@ public class AddCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "Ui cannot be null";
+        assert storage != null : "Storage cannot be null";
+
         tasks.addTask(task);
+        String taskStr;
+        if (task instanceof Deadline) {
+            taskStr = ((Deadline) task).toStringDisplay();
+        } else {
+            taskStr = task.toString();
+        }
+        assert taskStr != null : "Task description cannot be null";
         return ui.showMessage("Got it. I've added this task:" + "\n"
-                + task.toString() + '\n'
+                + taskStr + '\n'
                 + "Now you have " + tasks.size() + " tasks in the list.");
     }
 

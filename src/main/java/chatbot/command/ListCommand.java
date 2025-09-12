@@ -23,6 +23,9 @@ public class ListCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "Ui cannot be null";
+        assert storage != null : "Storage cannot be null";
         if (tasks.getTasks().isEmpty()) {
             return ui.showMessage("Your task list is empty!");
         }

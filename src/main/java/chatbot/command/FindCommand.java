@@ -1,12 +1,17 @@
 package chatbot.command;
 
+import java.util.ArrayList;
+
 import chatbot.storage.Storage;
 import chatbot.task.Task;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
-import java.util.ArrayList;
 
-public class FindCommand  extends Command {
+/**
+ * Represents a command to find all tasks in the TaskList.
+ * When executed, it displays all tasks with the matching string in the description.
+ */
+public class FindCommand extends Command {
     private final String keyword;
 
     /**
@@ -27,6 +32,9 @@ public class FindCommand  extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "Ui cannot be null";
+        assert storage != null : "Storage cannot be null";
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks.getTasks()) {
             if (task.toString().toLowerCase().contains(keyword.toLowerCase())) {
