@@ -7,7 +7,7 @@ import chatbot.ui.Ui;
 public class ResetCommand extends Command {
 
     /**
-     * Constructs a HelpCommand.
+     * Constructs a ResetCommand.
      *
      */
     public ResetCommand() {}
@@ -28,7 +28,7 @@ public class ResetCommand extends Command {
     /**
      * Indicates whether this command exits the application.
      *
-     * @return false because MarkCommand does not terminate the chatbot
+     * @return false because ResetCommand does not terminate the chatbot
      */
     @Override
     public boolean isExit(){
