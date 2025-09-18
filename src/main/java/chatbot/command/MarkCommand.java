@@ -13,7 +13,7 @@ import chatbot.ui.Ui;
  */
 public class MarkCommand extends Command {
     private int index;
-    private boolean mark;
+    private boolean isMark;
 
     /**
      * Constructs a MarkCommand.
@@ -23,7 +23,7 @@ public class MarkCommand extends Command {
      */
     public MarkCommand(int index, boolean mark) {
         this.index = index;
-        this.mark = mark;
+        this.isMark = mark;
     }
 
     /**
@@ -41,12 +41,12 @@ public class MarkCommand extends Command {
         assert storage != null : "Storage cannot be null";
         Task task = tasks.getTask(index);
         assert task != null : "Task cannot be null";
-        if (mark) {
+        if (isMark) {
             task.markDone();
         } else {
             task.unmarkDone();
         }
-        String status = mark ? "completed" : "not completed";
+        String status = isMark ? "completed" : "not completed";
         return "Okay, I've marked this task as " + status + ":" + "\n" + task.toString()
                 + "\nBEEP B00P";
     }

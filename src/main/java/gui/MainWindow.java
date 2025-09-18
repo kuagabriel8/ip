@@ -34,6 +34,8 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        scrollPane.setFitToWidth(true);
+        dialogContainer.setFillWidth(true);
     }
 
     /** Injects the Duke instance */
@@ -67,7 +69,7 @@ public class MainWindow extends AnchorPane {
         if (response.isExit()) {
             // Close the GUI after a short delay to show the last message
             PauseTransition delay = new PauseTransition(Duration.seconds(1));
-            delay.setOnFinished(event -> Platform.exit()); // stage is your primary stage
+            delay.setOnFinished(event -> Platform.exit());
             delay.play();
         }
     }

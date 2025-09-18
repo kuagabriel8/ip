@@ -39,6 +39,10 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        displayPicture.setFitWidth(32);          // target size (try 24–40)
+        displayPicture.setFitHeight(32);
+        displayPicture.setPreserveRatio(true);
+        displayPicture.setSmooth(true);
     }
 
     /**
@@ -53,14 +57,14 @@ public class DialogBox extends HBox {
 
     public static DialogBox getUserDialog(String text, Image img) {
         var db = new DialogBox(text, img);
-        db.dialog.setFont(Font.font("Consolas", FontWeight.NORMAL, 14));
+        db.dialog.setFont(Font.font("Consolas", FontWeight.NORMAL, 10));
         return db;
     }
 
     public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
-        db.dialog.setFont(Font.font("Orbitron", FontWeight.BOLD, 17));
+        db.dialog.setFont(Font.font("Orbitron", FontWeight.BOLD, 8));
         db.dialog.setStyle("-fx-text-fill: red;");
         return db;
     }

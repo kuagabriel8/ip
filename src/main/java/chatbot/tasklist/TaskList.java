@@ -64,11 +64,16 @@ public class TaskList {
     public String deleteTask(int index) {
         assert index >= 0 : "Index cannot be negative";
         assert index < tasks.size() : "Index out of bounds";
+        String removedTask = tasks.get(index).toString();
         tasks.remove(index);
-        return "deleting this task" + "\n" + tasks.get(index).toString();
+        return "deleting this task" + "\n" + removedTask;
     }
 
-    public String reset(){
+    /**
+     * Clears the tasklist
+     * @return String acknowledging action
+     */
+    public String reset() {
         tasks.clear();
         return "reset completed";
     }

@@ -7,7 +7,7 @@ package chatbot.task;
  */
 public class Task {
 
-    private boolean done;
+    private boolean isDone;
     private final String description;
 
     /**
@@ -18,7 +18,7 @@ public class Task {
      */
     public Task(String description) {
         this.description = description;
-        this.done = false;
+        this.isDone = false;
     }
 
     /**
@@ -27,21 +27,21 @@ public class Task {
      * @return whether the task is completed
      */
     public boolean isDone() {
-        return done;
+        return isDone;
     }
 
     /**
      * Marks the task as done.
      */
     public void markDone() {
-        this.done = true;
+        this.isDone = true;
     }
 
     /**
      * Marks the task as not done.
      */
     public void unmarkDone() {
-        this.done = false;
+        this.isDone = false;
     }
 
     /**
@@ -51,6 +51,6 @@ public class Task {
      */
     @Override
     public String toString() {
-        return (done ? "[X] " : "[ ] ") + description;
+        return (isDone ? "[X] " : "[ ] ") + description;
     }
 }

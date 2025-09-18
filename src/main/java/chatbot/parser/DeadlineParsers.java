@@ -8,6 +8,9 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.List;
 
+import chatbot.exception.InvalidDatetimeException;
+
+
 /**
  * Utility class for parsing deadline strings into {@link java.time.LocalDateTime}.
  *
@@ -66,7 +69,7 @@ public class DeadlineParsers {
      * @return the corresponding LocalDateTime
      * @throws IllegalArgumentException if the string does not match any supported format
      */
-    public static LocalDateTime parseToDateTime(String raw) {
+    public static LocalDateTime parseToDateTime(String raw) throws InvalidDatetimeException {
         String s = normalize(raw);
 
         List<DateTimeFormatter> order = List.of(
@@ -88,11 +91,7 @@ public class DeadlineParsers {
             }
         }
 
-        throw new IllegalArgumentException(
-                "Invalid date/time. Use one of: yyyy-mm-dd, yyyy-mm-dd HHmm, dd-mm-yyyy, dd-mm-yyyy HHmm "
-                        +
-                "(e.g., 2019-12-02 1800 or 02-12-2019 1800)."
-        );
+        throw new InvalidDatetimeException();
     }
 
     // Normalize separators to '-' and collapse spaces

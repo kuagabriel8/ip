@@ -2,17 +2,27 @@ package chatbot.task;
 
 import chatbot.exception.EmptyArgumentException;
 
+/**
+ * Represents an event task with a description, start time, and end time.
+ * Stores raw "from" and "to" strings and formats them for display.
+ */
 public class Event extends Task {
     protected String from;
     protected String to;
 
-    public Event(String description, String from, String to){
+    /**
+     * Creates an event with the given description, start, and end.
+     */
+    public Event(String description, String from, String to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
-    public static Event parse(String arguments){
+    /**
+     * Parses "description /from START /to END" into an Event.
+     */
+    public static Event parse(String arguments) {
         String[] fromSplit = arguments.split(" /from ", 2);
         String description = fromSplit[0];
 
@@ -39,7 +49,7 @@ public class Event extends Task {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "[E]" + super.toString() + " from: " + from + " to: " + to;
     }
 }
