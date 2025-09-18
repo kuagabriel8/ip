@@ -42,7 +42,7 @@ public class FindCommand extends Command {
         // Filter matching tasks
         List<Task> matchingTasks = tasks.getTasks().stream()
                 .filter(task -> task.toString().toLowerCase().contains(loweredKeyword))
-                .toList(); // Java 16+, otherwise use Collectors.toList()
+                .toList();
 
         if (matchingTasks.isEmpty()) {
             return "No matching tasks found for: " + keyword;

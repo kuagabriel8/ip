@@ -47,7 +47,8 @@ public class MarkCommand extends Command {
             task.unmarkDone();
         }
         String status = mark ? "completed" : "not completed";
-        return "Okay, I've marked this task as " + status + ":" + "\n" + task.toString();
+        return "Okay, I've marked this task as " + status + ":" + "\n" + task.toString()
+                + "\nBEEP B00P";
     }
 
     /**
@@ -56,7 +57,5 @@ public class MarkCommand extends Command {
      * @return false because MarkCommand does not terminate the chatbot
      */
     @Override
-    public boolean isExit(){
-        return false;
-    }
+    public boolean isExit() { return false; }
 }

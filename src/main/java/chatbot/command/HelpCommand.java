@@ -1,7 +1,6 @@
 package chatbot.command;
 
 import chatbot.storage.Storage;
-import chatbot.task.Task;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
 
@@ -11,7 +10,7 @@ import chatbot.ui.Ui;
 public class HelpCommand extends Command {
 
     private static final String HELP_MESSAGE = String.join("\n",
-            "Here are the commands you can use:",
+            "Here are the commands you can use BEEP B00P:",
             "",
             "1. todo DESCRIPTION",
             "   -> Adds a new ToDo task.",
@@ -57,8 +56,7 @@ public class HelpCommand extends Command {
     public HelpCommand() {}
 
     /**
-     * Executes the command by marking or unmarking the specified task.
-     * Updates the user interface with the result.
+     * Executes the command by giving the user a cheatsheet to use this app.
      *
      * @param tasks   the TaskList containing the tasks
      * @param ui      the Ui to show messages to the user
@@ -72,10 +70,8 @@ public class HelpCommand extends Command {
     /**
      * Indicates whether this command exits the application.
      *
-     * @return false because MarkCommand does not terminate the chatbot
+     * @return false because HelpCommand does not terminate the chatbot
      */
     @Override
-    public boolean isExit(){
-        return false;
-    }
+    public boolean isExit() { return false; }
 }

@@ -1,17 +1,21 @@
 package chatbot.exception;
 
-public class InvalidCommandException extends Exception{
-
-    public InvalidCommandException() {
-        super("Invalid command. Please enter a valid command.");
-    }
+/**
+ * Exception thrown when a user enters an invalid command.
+ * This ensures that invalid or unrecognized commands are explicitly
+ * flagged and handled, improving program robustness and user feedback.
+ */
+public class InvalidCommandException extends Exception {
 
     /**
-     * Creates an InvalidCommandException with a custom message.
+     * Constructs a new {@code InvalidCommandException} with a custom message
+     * that includes the invalid command entered by the user.
      *
-     * @param command the command string that caused the exception
+     * @param command the invalid command string that caused this exception
      */
     public InvalidCommandException(String command) {
-        super("Invalid command: \"" + command + "\". Please enter a valid command.");
+        super("Invalid command: \"" + command + "\". Please enter a valid command. \nBEEP B00P");
     }
 }
+
+// Javadoc comments above were generated with assistance from ChatGPT.
