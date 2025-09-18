@@ -32,7 +32,9 @@ public class MainWindow extends AnchorPane {
     private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     @FXML
-    public void initialize() { scrollPane.vvalueProperty().bind(dialogContainer.heightProperty()); }
+    public void initialize() {
+        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+    }
 
     /** Injects the Duke instance */
     public void setChatbot9000(Chatbot9000 c) {

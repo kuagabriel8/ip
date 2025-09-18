@@ -13,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -49,12 +52,18 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        db.dialog.setFont(Font.font("Consolas", FontWeight.NORMAL, 14));
+        return db;
     }
 
     public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        db.dialog.setFont(Font.font("Orbitron", FontWeight.BOLD, 17));
+        db.dialog.setStyle("-fx-text-fill: red;");
         return db;
     }
+    //Used chatgpt to find a font suitable for a robot
 }
+

@@ -33,9 +33,9 @@ public class Chatbot9000 {
     }
 
     public Response getGreeting() {
-        String responseMessage = "Hello! I'm Chatbot9000\nWhat can I do for you?\n"
+        String responseMessage = "BEEP B00P I'm Chatbot9000\nYour wish is my command\n"
                 +
-                "Input 'help' to access the help page\nInput 'reset' to clear sample data";
+                "'help' -> access the help page\n'reset' -> clear sample data";
         return new Response(responseMessage, false);
     }
 

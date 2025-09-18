@@ -24,7 +24,7 @@ public class ExitCommand extends Command {
         assert ui != null : "Ui cannot be null";
         assert storage != null : "Storage cannot be null";
 
-        return "Bye! Hope to see you again soon.";
+        return "Bye! BEEP B00P BEEP B00P";
     }
 
     /**

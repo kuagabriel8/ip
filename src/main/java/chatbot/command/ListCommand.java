@@ -1,7 +1,6 @@
 package chatbot.command;
 
 import chatbot.storage.Storage;
-import chatbot.task.Task;
 import chatbot.tasklist.TaskList;
 import chatbot.ui.Ui;
 
@@ -27,7 +26,7 @@ public class ListCommand extends Command {
         assert ui != null : "Ui cannot be null";
         assert storage != null : "Storage cannot be null";
         if (tasks.getTasks().isEmpty()) {
-            return "Your task list is empty!";
+            return "Task list is empty! \nBEEP B00P";
         }
 
         String taskListStr =
