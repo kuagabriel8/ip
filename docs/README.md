@@ -95,6 +95,8 @@ You now have 3 tasks in the list.
 
 ## Listing Tasks
 
+Lists all the tasks in the app memory
+
 **Usage**
 
 ```list```
@@ -107,6 +109,10 @@ You now have 3 tasks in the list.
 3. [E][ ] Chill session from: now to: later
 ```
 ## Marking/Unmarking
+
+Marks/Unmarks tasks when completed/incomplete
+
+-The index must be a positive integer
 
 **Usage**
 
@@ -138,6 +144,8 @@ Deleting this task:
 
 ## Finding
 
+- partial words will be searched. eg. fin will match finish
+
 **Usage**
 
 ```Find homework```
@@ -163,6 +171,8 @@ Tasks have been successfully saved!
 
 ## Resetting
 
+Clears all entries from the tasklist
+
 **Usage**
 
 ```reset```
@@ -174,6 +184,8 @@ reset completed
 ```
 
 ## Help
+
+Gives user a help cheatsheet
 
 **Usage**
 
@@ -189,6 +201,8 @@ Here are the commands you can use BEEP B00P:
 ```
 
 ## Exit
+
+Exits the program
 
 **Usage**
 
