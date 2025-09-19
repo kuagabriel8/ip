@@ -103,7 +103,7 @@ Lists all the tasks in the app memory
 
 **Example output**
 
-```
+```angular2html
 1. [T][ ] Finish homework
 2. [D][ ] Submit report by: 2019-12-02 1800
 3. [E][ ] Chill session from: now to: later
@@ -116,7 +116,7 @@ Marks/Unmarks tasks when completed/incomplete
 
 **Usage**
 
-```
+```angular2html
 mark 1
 unmark 1
 ```
@@ -133,7 +133,9 @@ Okay, I've marked this task as not completed:
 
 **Usage**
 
-```delete 1```
+```angular2html
+delete 1
+```
 
 **Example output**
 
@@ -148,7 +150,9 @@ Deleting this task:
 
 **Usage**
 
-```Find homework```
+```
+Find homework
+```
 
 **Example output**
 
@@ -161,7 +165,9 @@ Here are the matching tasks in your list:
 
 **Usage**
 
-```save```
+```
+save
+```
 
 **Example output**
 
@@ -175,7 +181,9 @@ Clears all entries from the tasklist
 
 **Usage**
 
-```reset```
+```
+reset
+```
 
 **Example output**
 
@@ -194,10 +202,7 @@ Gives user a help cheatsheet
 **Example output**
 
 ```
-Here are the commands you can use BEEP B00P:
-...
-...
-...
+Here are the commands you can use BEEP B00P: ...
 ```
 
 ## Exit
@@ -206,7 +211,9 @@ Exits the program
 
 **Usage**
 
-```bye```
+```
+bye
+```
 
 **Example output**
 
