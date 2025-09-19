@@ -131,6 +131,10 @@ Okay, I've marked this task as not completed:
 ```
 ## Deleting
 
+Deletes tasks from task list
+
+-The index must be a positive integer
+
 **Usage**
 
 ```angular2html
@@ -162,6 +166,8 @@ Here are the matching tasks in your list:
 ```
 
 ## Saving
+
+If no data file is found, tasks will be saved in a newly created file named data
 
 **Usage**
 
