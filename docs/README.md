@@ -197,7 +197,9 @@ Gives user a help cheatsheet
 
 **Usage**
 
-```help```
+```
+help
+```
 
 **Example output**
 
