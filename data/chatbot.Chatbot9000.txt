@@ -1,2 +1,2 @@
-[D][ ] sleep by: 2001-01-01T23:59
-[E][X] eat from: now to: forever
+[T][ ] Finish homework
+[D][ ] Submit report by: 2019-12-02T18:00

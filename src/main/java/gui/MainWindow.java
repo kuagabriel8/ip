@@ -57,6 +57,7 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+
         String input = userInput.getText();
         Response response = chatbot9000.getResponse(input);
         String responseMessage = response.getResponse();
@@ -64,6 +65,7 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getDukeDialog(responseMessage, dukeImage)
         );
+
         userInput.clear();
 
         if (response.isExit()) {

@@ -1,14 +1,13 @@
 package chatbot.storage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 
-import chatbot.exception.InvalidDatetimeException;
 import chatbot.task.Deadline;
 import chatbot.task.Event;
 import chatbot.task.Task;
@@ -24,7 +23,6 @@ import chatbot.tasklist.TaskList;
  */
 public class Storage {
 
-    private final String samplefilepath;
     private final String filepath;
     private final String parentFolder;
 
@@ -34,8 +32,7 @@ public class Storage {
      * @param parentFolder the folder to store the file in
      * @param filepath     the file path for storing tasks
      */
-    public Storage(String parentFolder, String filepath, String samplefilepath) {
-        this.samplefilepath = samplefilepath;
+    public Storage(String parentFolder, String filepath) {
         this.parentFolder = parentFolder;
         this.filepath = filepath;
     }
@@ -45,26 +42,12 @@ public class Storage {
      *
      * @return an ArrayList of tasks read from the file
      */
-    public ArrayList<Task> loadTasks()  {
-        ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(samplefilepath);
-
-        if (!file.exists()) {
-            return tasks;
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                Task task = parseTask(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public ArrayList<Task> loadTasks() {
+        ArrayList<Task> tasks =  new ArrayList<>(List.of(
+                new Todo("Finish homework"),
+                new Deadline("Submit report", "2019-12-02 1800"),
+                new Event("Chill session", "now", "later")
+        ));
         return tasks;
     }
 
@@ -77,59 +60,74 @@ public class Storage {
     private Task parseTask(String line) {
         line = line.trim();
 
-        // Assertion to check the line format
-        // ^\[T|D|E\]  -> first box must be [T], [D], or [E]
-        // \[( |X)\]   -> second box must be [ ] or [X]
-        // .+          -> at least one character after the boxes (description)
+        // Validate basic shape: [T|D|E][ |X]...
         assert line.matches("^\\[[TDE]\\]\\[( |X)\\].+")
                 : "Invalid task format: " + line;
 
-
         boolean isDone = line.contains("[X]");
-        if (isDone) {
-            line = line.replace("[X]", "");
+        // strip the done box so we can parse uniformly
+        line = line.replace("[X]", "").replace("[ ]", "").trim();
 
-        } else {
-            line = line.replace("[ ]", "");
+        // Type is the char inside the first box, e.g. [T]
+        char type = line.charAt(1);
+        String payload = line.substring(3).trim();
+        return withDone(createTask(type, payload), isDone);
+    }
 
+    /** Factory: create Todo/Deadline/Event from the payload (no done-state here). */
+    private Task createTask(char type, String payload) {
+        return switch (type) {
+        case 'T' -> createTodo(payload);
+        case 'D' -> createDeadline(payload);
+        case 'E' -> createEvent(payload);
+        default -> throw new IllegalArgumentException("Unknown task type: " + type);
+        };
+    }
+
+    /** Marks as done if needed and returns the same task (fluent helper). */
+    private Task withDone(Task t, boolean isDone) {
+        if (isDone) { t.markDone(); }
+        return t;
+    }
+
+    /** T: payload is just the description. */
+    private Task createTodo(String payload) {
+        return new Todo(payload);
+    }
+
+    /** D: payload looks like "<desc> by: <iso-datetime>" (your save format). */
+    private Task createDeadline(String payload) {
+        String[] parts = payload.split("by:", 2);
+        String desc = parts[0].trim();
+        String byStr = (parts.length > 1) ? parts[1].trim() : "";
+
+        try {
+            if (!byStr.isEmpty()) {
+                LocalDateTime by = LocalDateTime.parse(byStr);
+                return new Deadline(desc, by.toString());
+            }
+        } catch (DateTimeParseException ignore) {
+            // fall through and keep raw string
         }
+        return new Deadline(desc, byStr);
+    }
 
-        if (line.startsWith("[T]")) {
-            //line = line.replace("[T]", "");
-            String description = line.substring(3).trim();
-            Task todo = new Todo(description);
-            if (isDone) {
-                todo.markDone();
+    /** E: payload looks like "<desc> from: <start> to: <end>" (free-form strings).*/
+    private Task createEvent(String payload) {
+        String[] fromSplit = payload.split("from:", 2);
+        String desc = fromSplit[0].trim();
+
+        String from = "";
+        String to = "";
+
+        if (fromSplit.length > 1) {
+            String[] toSplit = fromSplit[1].split("to:", 2);
+            from = toSplit[0].trim();
+            if (toSplit.length > 1) {
+                to = toSplit[1].trim();
             }
-            return todo;
-
-        } else if (line.startsWith("[D]")) {
-            line = line.replace("[D]", "");
-            String[] deadlineParts = line.split("by:");
-            String byStr = (deadlineParts.length > 1) ? deadlineParts[1].trim() : "";
-            LocalDateTime by = LocalDateTime.parse(byStr);
-            Deadline deadline = new Deadline(deadlineParts[0].trim(), by.toString());
-            if (isDone) {
-                deadline.markDone();
-            }
-            return deadline;
-
-        } else if (line.startsWith("[E]")) {
-            line = line.replace("[E]", "").trim();
-            String[] eventParts = line.split("from:");
-            String eventPart1 = (eventParts.length > 1) ? eventParts[1].trim() : "";
-            String[] eventParts2 = eventPart1.split("to:");
-            String eventPart2 = (eventParts2.length > 1) ? eventParts2[1].trim() : "";
-            Event event = new Event(eventParts[0].trim(), eventParts2[0].trim(), eventPart2);
-            if (isDone) {
-                event.markDone();
-            }
-
-            return event;
-
         }
-
-        return null;
+        return new Event(desc, from, to);
     }
 
     /**

@@ -23,9 +23,6 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
-          //  stage.setMinWidth(800);
-          //  stage.setMinHeight(600);
-          //  stage.centerOnScreen();
             stage.getIcons().add(
                     new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"))
             );

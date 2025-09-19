@@ -64,9 +64,13 @@ public class TaskList {
     public String deleteTask(int index) {
         assert index >= 0 : "Index cannot be negative";
         assert index < tasks.size() : "Index out of bounds";
-        String removedTask = tasks.get(index).toString();
-        tasks.remove(index);
-        return "deleting this task" + "\n" + removedTask;
+        try {
+            String removedTask = tasks.get(index).toString();
+            tasks.remove(index);
+            return "deleting this task" + "\n" + removedTask;
+        } catch (IndexOutOfBoundsException e) {
+            return "Index out of bounds BEEP B00P";
+        }
     }
 
     /**

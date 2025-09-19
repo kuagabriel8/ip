@@ -39,7 +39,7 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
-        displayPicture.setFitWidth(32);          // target size (try 24–40)
+        displayPicture.setFitWidth(32);
         displayPicture.setFitHeight(32);
         displayPicture.setPreserveRatio(true);
         displayPicture.setSmooth(true);

@@ -17,7 +17,6 @@ import chatbot.ui.Ui;
 public class Chatbot9000 {
     private static final String PARENT_FOLDER = "data";
     private static final String FILE_PATH = "data/chatbot.Chatbot9000.txt";
-    private static final String SAMPLE_FILEPATH = "data/sample.txt";
 
     private final Storage storage;
     private TaskList taskList;
@@ -27,7 +26,7 @@ public class Chatbot9000 {
      * Constructs a Chatbot9000 instance and initializes storage, UI, and task list.
      */
     public Chatbot9000() {
-        this.storage = new Storage(PARENT_FOLDER, FILE_PATH, SAMPLE_FILEPATH);
+        this.storage = new Storage(PARENT_FOLDER, FILE_PATH);
         this.ui = new Ui();
         this.taskList = new TaskList(storage.loadTasks());
     }
@@ -35,7 +34,7 @@ public class Chatbot9000 {
     public Response getGreeting() {
         String responseMessage = "BEEP B00P I'm Chatbot9000\nYour wish is my command\n"
                 +
-                "'help' -> access the help page\n'reset' -> clear sample data";
+                "'help' -> access the help page\n'reset' -> clear sample.txt data";
         return new Response(responseMessage, false);
     }
 

@@ -1,13 +1,13 @@
 package chatbot.parser;
 
-
 import chatbot.exception.EmptyArgumentException;
 import chatbot.exception.InvalidCommandException;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
 
 public class ParserTest {
 
@@ -19,10 +19,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_todoEmpty_throwsEmptyArgumentException_withMessage() {
+    public void parse_todoEmpty_throwsEmptyArgumentException() {
         EmptyArgumentException ex = assertThrows(
-                EmptyArgumentException.class,
-                () -> Parser.parse("todo")
+                EmptyArgumentException.class, () -> Parser.parse("todo")
         );
         assertEquals("The description of a todo cannot be empty.", ex.getMessage());
     }
@@ -38,10 +37,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_deadlineEmpty_throwsEmptyArgumentException_withMessage() {
+    public void parse_deadlineEmpty_throwsEmptyArgumentException() {
         EmptyArgumentException ex = assertThrows(
-                EmptyArgumentException.class,
-                () -> Parser.parse("deadline")
+                EmptyArgumentException.class, () -> Parser.parse("deadline")
         );
         assertEquals("The description of a deadline cannot be empty.", ex.getMessage());
     }
@@ -56,10 +54,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_eventEmpty_throwsEmptyArgumentException_withMessage() {
+    public void parse_eventEmpty_throwsEmptyArgumentException() {
         EmptyArgumentException ex = assertThrows(
-                EmptyArgumentException.class,
-                () -> Parser.parse("event")
+                EmptyArgumentException.class, () -> Parser.parse("event")
         );
         assertEquals("The description of an event cannot be empty.", ex.getMessage());
     }
@@ -93,10 +90,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_findEmpty_throwsEmptyArgumentException_withMessage() {
+    public void parse_findEmpty_throwsEmptyArgumentException() {
         EmptyArgumentException ex = assertThrows(
-                EmptyArgumentException.class,
-                () -> Parser.parse("find")
+                EmptyArgumentException.class, () -> Parser.parse("find")
         );
         assertEquals("Provide a keyword to find.", ex.getMessage());
     }
@@ -137,10 +133,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_invalidCommand_throwsInvalidCommandException_withMessage() {
+    public void parse_invalidCommand_throwsInvalidCommandException() {
         InvalidCommandException ex = assertThrows(
-                InvalidCommandException.class,
-                () -> Parser.parse("wassup")
+                InvalidCommandException.class, () -> Parser.parse("wassup")
         );
         // Matches your current InvalidCommandException(String) message (with BEEP line)
         assertEquals(
@@ -150,19 +145,17 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_blankInput_throwsEmptyArgumentException_withMessage() {
+    public void parse_blankInput_throwsEmptyArgumentException() {
         EmptyArgumentException ex = assertThrows(
-                EmptyArgumentException.class,
-                () -> Parser.parse("   ")
+                EmptyArgumentException.class, () -> Parser.parse("   ")
         );
         assertEquals("Please enter a command.", ex.getMessage());
     }
 
     @Test
-    public void parse_nullInput_throwsEmptyArgumentException_withMessage() {
+    public void parse_nullInput_throwsEmptyArgumentException() {
         EmptyArgumentException ex = assertThrows(
-                EmptyArgumentException.class,
-                () -> Parser.parse(null)
+                EmptyArgumentException.class, () -> Parser.parse(null)
         );
         assertEquals("Please enter a command.", ex.getMessage());
     }

@@ -39,16 +39,20 @@ public class MarkCommand extends Command {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "Ui cannot be null";
         assert storage != null : "Storage cannot be null";
-        Task task = tasks.getTask(index);
-        assert task != null : "Task cannot be null";
-        if (isMark) {
-            task.markDone();
-        } else {
-            task.unmarkDone();
+        try {
+            Task task = tasks.getTask(index);
+            assert task != null : "Task cannot be null";
+            if (isMark) {
+                task.markDone();
+            } else {
+                task.unmarkDone();
+            }
+            String status = isMark ? "completed" : "not completed";
+            return "Okay, I've marked this task as " + status + ":" + "\n" + task.toString()
+                    + "\nBEEP B00P";
+        } catch (IndexOutOfBoundsException e) {
+            return "Index out of bounds BEEP B00P";
         }
-        String status = isMark ? "completed" : "not completed";
-        return "Okay, I've marked this task as " + status + ":" + "\n" + task.toString()
-                + "\nBEEP B00P";
     }
 
     /**

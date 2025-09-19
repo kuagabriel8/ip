@@ -11,6 +11,7 @@ import chatbot.command.MarkCommand;
 import chatbot.command.ResetCommand;
 import chatbot.command.SaveCommand;
 import chatbot.exception.EmptyArgumentException;
+import chatbot.exception.InvalidArgumentException;
 import chatbot.exception.InvalidCommandException;
 import chatbot.task.Deadline;
 import chatbot.task.Event;
@@ -48,74 +49,40 @@ public class Parser {
      * @throws InvalidCommandException if the command is unrecognized
      * @throws EmptyArgumentException if arguments are missing
      */
-    public static Command parse(String fullCommand) throws EmptyArgumentException, InvalidCommandException {
+    public static Command parse(String fullCommand)
+            throws EmptyArgumentException, InvalidCommandException {
 
         if (fullCommand == null || fullCommand.isBlank()) {
             throw new EmptyArgumentException("Please enter a command.");
         }
-        // Precondition: fullCommand must not be null or empty
-        assert fullCommand != null : "fullCommand must not be null";
-        assert !fullCommand.isBlank() : "fullCommand must not be blank";
 
         String[] parts = fullCommand.trim().split("\\s+", 2);
-        String token = parts[0].toUpperCase();
-        String arguments = (parts.length > 1) ? parts[1].trim() : "";
+        String token = parts[0];
+        String args = (parts.length > 1) ? parts[1].trim() : "";
 
-        final Commands command;
-        try {
-            command = Commands.valueOf(token);
-        } catch (IllegalArgumentException e) {
-            System.err.println("DEBUG unknown command token: " + token); // prints to terminal
-            throw new InvalidCommandException(fullCommand);
-        }
-
-        // Invariant: command should always be non-empty
-        assert command != null : "command part should not be empty";
+        Commands command = parseCommand(token, fullCommand);
 
         switch (command) {
         case TODO:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("The description of a todo cannot be empty.");
-            }
-            return new AddCommand(new Todo(arguments));
+            requireArgs(args, "The description of a todo cannot be empty.");
+            return new AddCommand(new Todo(args));
 
         case DEADLINE:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("The description of a deadline cannot be empty.");
-            }
-            return new AddCommand(Deadline.parse(arguments));
+            requireArgs(args, "The description of a deadline cannot be empty.");
+            return new AddCommand(Deadline.parse(args));
 
         case EVENT:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("The description of an event cannot be empty.");
-            }
-            return new AddCommand(Event.parse(arguments));
+            requireArgs(args, "The description of an event cannot be empty.");
+            return new AddCommand(Event.parse(args));
 
         case DELETE:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("Provide the index of the task to delete.");
-            }
-            int deleteIndex = Integer.parseInt(arguments) - 1;
-            assert deleteIndex >= 0 : "The index of the task should be greater than 0.";
-            return new DeleteCommand(deleteIndex);
+            return new DeleteCommand(indexFrom(args, "Provide the index of the task to delete."));
 
         case MARK:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("Provide the index of the task to mark.");
-            }
-            assert arguments != null : "arguments must not be null";
-            int markIndex = Integer.parseInt(arguments) - 1;
-            assert markIndex >= 0 : "mark index out of bounds";
-            return new MarkCommand(markIndex, true);
+            return new MarkCommand(indexFrom(args, "Provide the index of the task to mark."), true);
 
         case UNMARK:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("Provide the index of the task to unmark.");
-            }
-            assert arguments != null : "arguments must not be null";
-            int unmarkIndex = Integer.parseInt(arguments) - 1;
-            assert unmarkIndex >= 0 : "unmark index out of bounds";
-            return new MarkCommand(unmarkIndex, false);
+            return new MarkCommand(indexFrom(args, "Provide the index of the task to unmark."), false);
 
         case SAVE:
             return new SaveCommand();
@@ -127,11 +94,8 @@ public class Parser {
             return new ListCommand();
 
         case FIND:
-            if (arguments.isEmpty()) {
-                throw new EmptyArgumentException("Provide a keyword to find.");
-            }
-            assert arguments != null : "arguments must not be null";
-            return new FindCommand(arguments);
+            requireArgs(args, "Provide a keyword to find.");
+            return new FindCommand(args);
 
         case HELP:
             return new HelpCommand();
@@ -142,5 +106,33 @@ public class Parser {
         default:
             throw new InvalidCommandException(fullCommand);
         }
+    }
+
+    private static Commands parseCommand(String token, String fullCommand)
+            throws InvalidCommandException {
+        try {
+            return Commands.valueOf(token.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.err.println("DEBUG unknown command token: " + token.toUpperCase());
+            throw new InvalidCommandException(fullCommand);
+        }
+    }
+
+    private static void requireArgs(String args, String message)
+            throws EmptyArgumentException {
+        if (args == null || args.isBlank()) {
+            throw new EmptyArgumentException(message);
+        }
+    }
+
+    /** Parses a 1-based index string to a 0-based index, with basic validation. */
+    private static int indexFrom(String args, String emptyMessage)
+            throws EmptyArgumentException {
+        requireArgs(args, emptyMessage);
+        int idx0 = Integer.parseInt(args) - 1;
+        if (idx0 < 0) {
+            throw new InvalidArgumentException("Index must be >= 1");
+        }
+        return idx0;
     }
 }

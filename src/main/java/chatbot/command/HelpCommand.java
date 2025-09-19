@@ -43,7 +43,7 @@ public class HelpCommand extends Command {
             "   -> Shows this help message.",
             "",
             "11. reset",
-            "   -> Resets your sample tasks.",
+            "   -> Resets your sample.txt tasks.",
             "",
             "11. bye",
             "   -> Exits the chatbot."
