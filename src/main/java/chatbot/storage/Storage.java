@@ -43,7 +43,7 @@ public class Storage {
      * @return an ArrayList of tasks read from the file
      */
     public ArrayList<Task> loadTasks() {
-        ArrayList<Task> tasks =  new ArrayList<>(List.of(
+        ArrayList<Task> tasks = new ArrayList<>(List.of(
                 new Todo("Finish homework"),
                 new Deadline("Submit report", "2019-12-02 1800"),
                 new Event("Chill session", "now", "later")
@@ -95,7 +95,7 @@ public class Storage {
         return new Todo(payload);
     }
 
-    /** D: payload looks like "<desc> by: <iso-datetime>" (your save format). */
+    //D: payload looks like "<desc> by: <iso-datetime>" (your save format).
     private Task createDeadline(String payload) {
         String[] parts = payload.split("by:", 2);
         String desc = parts[0].trim();
@@ -112,7 +112,7 @@ public class Storage {
         return new Deadline(desc, byStr);
     }
 
-    /** E: payload looks like "<desc> from: <start> to: <end>" (free-form strings).*/
+    //E: payload looks like "<desc> from: <start> to: <end>" (free-form strings).
     private Task createEvent(String payload) {
         String[] fromSplit = payload.split("from:", 2);
         String desc = fromSplit[0].trim();
