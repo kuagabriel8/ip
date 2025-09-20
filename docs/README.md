@@ -150,7 +150,7 @@ Deleting this task:
 
 ## Finding
 
-- partial words will be searched. eg. fin will match finish
+- partial words will be searched. eg. fini will match finish
 
 **Usage**
 
