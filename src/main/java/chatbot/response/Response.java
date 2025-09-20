@@ -6,7 +6,7 @@ package chatbot.response;
  * A Response contains the message to be displayed to the user
  * and a flag indicating whether the chatbot should exit after this response.
  */
-public class Response{
+public class Response {
     private String responseMessage;
     private boolean isExit;
 
