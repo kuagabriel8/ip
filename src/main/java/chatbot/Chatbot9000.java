@@ -58,7 +58,6 @@ public class Chatbot9000 {
      * Continuously reads and executes commands until the exit command is issued.
      */
     public void start() {
-        //ui.greetUser();
         boolean isExit = false;
         while (!isExit) {
             try {
