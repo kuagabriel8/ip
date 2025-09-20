@@ -19,11 +19,7 @@ public class TaskList {
      * @param tasks an ArrayList of Task objects to initialize the TaskList
      */
     public TaskList(ArrayList<Task> tasks) {
-        //  if (tasks == null) {
         this.tasks = tasks;
-        //     } else {
-        //     this.tasks = new ArrayList<>();
-        //    }
     }
 
     /**
